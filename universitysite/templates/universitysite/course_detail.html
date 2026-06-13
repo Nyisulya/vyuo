@@ -1,0 +1,38 @@
+{% extends 'universitysite/base.html' %}
+
+{% block title %}{{ course_uni.course.name }} - Maelezo ya Kozi{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <section class="card rounded-3xl p-6">
+        <div class="grid gap-6 lg:grid-cols-2">
+            <div class="space-y-4 rounded-3xl bg-slate-50 p-6 shadow-sm">
+                <h1 class="text-3xl font-semibold text-slate-900">{{ course_uni.course.name }}</h1>
+                <p class="text-sm text-slate-600">Chuo: <span class="font-semibold text-slate-900">{{ course_uni.university.name }}</span></p>
+                <div class="grid gap-3 sm:grid-cols-2">
+                    <div class="rounded-2xl bg-white p-4 shadow-sm">
+                        <p class="text-sm text-slate-500">Level</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-900">{{ course_uni.level }}</p>
+                    </div>
+                    <div class="rounded-2xl bg-white p-4 shadow-sm">
+                        <p class="text-sm text-slate-500">Muda</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-900">{{ course_uni.duration }} years</p>
+                    </div>
+                    <div class="rounded-2xl bg-white p-4 shadow-sm">
+                        <p class="text-sm text-slate-500">Ada</p>
+                        <p class="mt-2 text-lg font-semibold text-slate-900">{{ course_uni.fee }} Tsh/ mwaka</p>
+                    </div>
+                </div>
+            </div>
+            <div class="rounded-3xl bg-slate-50 p-6 shadow-sm">
+                <h2 class="text-2xl font-semibold text-slate-900">Mahitaji ya Kozi</h2>
+                <p class="mt-4 whitespace-pre-line rounded-3xl border border-slate-200 bg-white p-5 text-slate-700">{{ course_uni.requirements.description|linebreaks }}</p>
+            </div>
+        </div>
+    </section>
+    <div>
+        <a href="#"
+            class="inline-flex rounded-3xl bg-sky-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-sky-700">Apply Now</a>
+    </div>
+</div>
+{% endblock %}

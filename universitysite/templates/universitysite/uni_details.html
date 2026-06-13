@@ -1,0 +1,57 @@
+{% extends 'universitysite/base.html' %}
+
+{% block title %}
+  {{ university.name }} - Taarifa za Chuo
+{% endblock %}
+
+{% block content %}
+  <div class="space-y-6">
+    <section class="card rounded-3xl p-6">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="text-sm uppercase tracking-[0.3em] text-sky-600">Taarifa za chuo</p>
+          <h1 class="text-3xl font-semibold text-slate-900">{{ university.name }}</h1>
+          <p class="mt-2 text-sm text-slate-600">
+            Mkoa: <span class="font-semibold text-slate-900">{{ university.region.name }}</span>
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <span class="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{{ university.type }}</span>
+          <span class="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{{ university.umiliki }}</span>
+          <span class="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{{ university.phone_number }}</span>
+          <span class="rounded-full bg-slate-100 px-4 py-2 text-sm text-slate-700">{{ university.email }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card rounded-3xl p-6">
+      <h2 class="text-2xl font-semibold text-slate-900">Kozi zinazopewa</h2>
+      <p class="mt-2 text-sm text-slate-600">Angalia kozi na bonyeza kuona maelezo zaidi.</p>
+      <div class="mt-5 grid gap-4">
+        {% for cours in course %}
+          <a href="{% url 'universitysite:course_detail' cours.id %}" class="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 shadow-sm hover:border-sky-400 hover:bg-sky-50">{{ cours.course.name }}</a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
+      {% if course.has_previous %}
+        <a href="?course_page={{ course.previous_page_number }}{% if request.GET.q %}
+            &q={{ request.GET.q }}
+          {% endif %}"
+          class="rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200">
+          Kabla
+        </a>
+      {% endif %}
+      <span>Page {{ course.number }} / {{ course.paginator.num_pages }}</span>
+      {% if course.has_next %}
+        <a href="?course_page={{ course.next_page_number }}{% if request.GET.q %}
+            &q={{ request.GET.q }}
+          {% endif %}"
+          class="rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200">
+          Ijayo
+        </a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'universitysite/base.html' %}
+
+{% block title %}
+  Vyuo kwa Mkoa - {{ region.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="space-y-6">
+    <section class="card rounded-3xl p-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p class="text-sm uppercase tracking-[0.3em] text-sky-600">Mkoa</p>
+          <h1 class="text-3xl font-semibold text-slate-900">{{ region.name }}</h1>
+          <p class="mt-2 text-slate-600">Vyuo vinavyopatikana katika mkoa huu.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card rounded-3xl p-6">
+      <div class="grid gap-4">
+        {% for cours in reg_chuos %}
+          <a href="{% url 'universitysite:universi' cours.id %}" class="rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 shadow-sm hover:border-sky-400 hover:bg-sky-50">{{ cours.name }}</a>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+{% endblock %}
