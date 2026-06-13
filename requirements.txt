@@ -5,6 +5,7 @@ django-adminlte3==0.1.6
 django-jazzmin==3.0.4
 django-unfold==0.95.0
 gunicorn==26.0.0
+whitenoise==6.8.0
 packaging==26.2
 psycopg2-binary==2.9.12
 sqlparse==0.5.5
