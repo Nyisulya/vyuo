@@ -16,9 +16,9 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/vyuo  
+            cd /var/www/vyuo/universitysite  # Hapa ndipo mradi wako ulipo
             git pull origin main
-            source venv/bin/activate
+            source ../venv/bin/activate      # Adjust kulingana na ulipo venv
             pip install -r requirements.txt
             python3 manage.py migrate
             python3 manage.py collectstatic --noinput
