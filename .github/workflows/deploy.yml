@@ -15,11 +15,12 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT }}
           script: |
-            cd /var/www/vyuo/universitysite  # Hapa ndipo mradi wako ulipo
-            git pull origin main
-            source ../venv/bin/activate      # Adjust kulingana na ulipo venv
-            pip install -r requirements.txt
-            python3 manage.py migrate
-            python3 manage.py collectstatic --noinput
-            sudo /usr/bin/systemctl restart gunicorn
+                cd /var/www/vyuo
+                git pull origin main
+                source venv/bin/activate
+                pip install -r requirements.txt
+                python3 manage.py migrate
+                python3 manage.py collectstatic --noinput
+                sudo systemctl restart gunicorn
