@@ -11,11 +11,13 @@
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2751QHPWST"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-2751QHPWST');
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      
+      gtag('config', 'G-2751QHPWST')
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -49,7 +51,7 @@
       <header class="bg-white border-b border-slate-200 shadow-sm">
         <div class="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <a href="{% url 'universitysite:home' %}" class="text-2xl font-semibold text-sky-700">Vyuo Tanzania</a>
+            <a href="{% url 'universitysite:home' %}" class="text-2xl font-semibold text-sky-700">Vyuo Vikuu</a>
             <p class="mt-1 text-sm text-slate-500">Tafuta chuo, kozi, na taarifa kwa urahisi.</p>
           </div>
           <nav class="flex flex-wrap gap-3 text-sm font-medium text-slate-700">
@@ -61,6 +63,7 @@
 
       <main class="flex-1 mx-auto w-full max-w-6xl px-4 py-8">
         {% block content %}
+
         {% endblock %}
       </main>
 
