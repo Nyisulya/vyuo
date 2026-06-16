@@ -76,19 +76,17 @@ CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://*.ngrok-f
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f'sqlite:///{os.path.join(BASE_DIR, "db.sqlite3")}',
-        conn_max_age=600,
-    )
-}
 
-# Hapa ndipo tunapopunguza "sslmode" kwa PostgreSQL pekee
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=True
-    )
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'vyuofinder_db',
+        'USER': 'nyisu_user',
+        'PASSWORD': 'Nyisu@2003@',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
+}
 JAZZMIN_SETTINGS = {
     "site_title": "University Portal Admin",
     "site_header": "University Portal",
