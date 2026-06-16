@@ -7,29 +7,29 @@ def home(request):
     university = University.objects.all()
     courses = Course.objects.all()
     unicourse = UniversityCourse.objects.all()
-    querry = request.GET.get('q')
-    
-   
+    query = request.GET.get('q')
+
     uni_tpe = request.GET.get('umiliki')
     unifo = request.GET.get('level')
-    if unifo:
-        unicourse = UniversityCourse.objects.filter(level__icontains=unifo)
+
     if uni_tpe:
-        university = University.objects.filter(umiliki__icontains=uni_tpe)
-    if querry:
-         university = University.objects.filter(name__icontains=querry)
-         courses = Course.objects.filter(name__icontains=querry)
+        university = university.filter(umiliki__icontains=uni_tpe)
+    if query:
+        university = university.filter(name__icontains=query)
+        courses = courses.filter(name__icontains=query)
+    if unifo:
+        unicourse = unicourse.filter(level__icontains=unifo)
+
     university_paginator = Paginator(university, 10)
-    iversity_page_number = request.GET.get('university_page')
-    university = university_paginator.get_page(iversity_page_number)
+    university_page_number = request.GET.get('university_page')
+    university = university_paginator.get_page(university_page_number)
     course_paginator = Paginator(courses, 10)
     courses_page_number = request.GET.get('course_page')
-    courses = course_paginator.get_page(courses_page_number)    
+    courses = course_paginator.get_page(courses_page_number)
     context = {
-        'region': region,
         'university': university,
         'course': courses,
-        'unicourses':unicourse
+        'unicourses': unicourse
     }
     
     return render(request, 'universitysite/home.html', context)
