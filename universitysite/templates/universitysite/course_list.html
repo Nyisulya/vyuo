@@ -69,7 +69,7 @@
         const courseResults = document.getElementById('course-results');
 
         function buildAjaxUrl(rawUrl) {
-            const url = new URL(rawUrl, window.location.origin);
+            const url = new URL(rawUrl, window.location.href);
             url.searchParams.set('ajax', '1');
             return url;
         }
