@@ -20,7 +20,7 @@ def course_list(request):
     page_number = request.GET.get('page')
     courses = paginator.get_page(page_number)
     return render(request, 'universitysite/course_list.html', {'course': courses})
-def home(request):
+def home(request,pk):
     
     regions = get_object_or_404(Region,pk=pk)
     reg_chuo = University.objects.filter(region = regions)
