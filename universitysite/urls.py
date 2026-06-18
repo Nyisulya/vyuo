@@ -3,6 +3,7 @@ from universitysite import views
 app_name = 'universitysite'
 urlpatterns = [
     path('', views.home, name = 'home'),
+    path('homes/<int:pk>/', views.vyuo_region, name='vyuo'),
     path('home/course/<int:pk>/', views.course_detail, name='course_detail'),
     path('home/university/<int:pk>/', views.univ_detail, name='universi'),
     path('home/<int:pk>/', views.cou_detail, name = 'cou'),

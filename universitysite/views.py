@@ -20,10 +20,29 @@ def course_list(request):
     page_number = request.GET.get('page')
     courses = paginator.get_page(page_number)
     return render(request, 'universitysite/course_list.html', {'course': courses})
-def home(request,pk):
+def home(request):
+    university = University.objects.all()
+    courses = Course.objects.all()
+    region = Region.objects.all()
     
-    regions = get_object_or_404(Region,pk=pk)
-    reg_chuo = University.objects.filter(region = regions)
+    university_paginator = Paginator(university, 10)
+    university_page_number = request.GET.get('university_page')
+    university = university_paginator.get_page(university_page_number)
+    
+    course_paginator = Paginator(courses, 10)
+    courses_page_number = request.GET.get('course_page')
+    courses = course_paginator.get_page(courses_page_number)
+    
+    context = {
+        'university': university,
+        'course': courses,
+        'region': region
+    }
+    return render(request, 'universitysite/home.html', context)
+
+def vyuo_region(request, pk):
+    regions = get_object_or_404(Region, pk=pk)
+    reg_chuo = University.objects.filter(region=regions)
     return render(request, 'universitysite/reg_chuo.html', {'region': regions, 'reg_chuos': reg_chuo})
 
 def univ_detail(request, pk):
