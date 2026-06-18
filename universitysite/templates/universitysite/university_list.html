@@ -16,9 +16,9 @@
                         <select id="umiliki" name="umiliki"
                             class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
                             <option value="">Chagua aina ya chuo</option>
-                            <option value="Goverment" {% if request.GET.umiliki=='Goverment' %}selected{% endif %}>
+                            <option value="Goverment" {% if request.GET.umiliki == 'Goverment' %}selected{% endif %}>
                                 Serikali</option>
-                            <option value="Private" {% if request.GET.umiliki=='Private' %}selected{% endif %}>Binafsi
+                            <option value="Private" {% if request.GET.umiliki == 'Private' %}selected{% endif %}>Binafsi
                             </option>
                         </select>
                     </div>
@@ -27,13 +27,13 @@
                         <select id="level" name="level"
                             class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
                             <option value="">Chagua level</option>
-                            <option value="Certificate" {% if request.GET.level=='Certificate' %}selected{% endif %}>
+                            <option value="Certificate" {% if request.GET.level == 'Certificate' %}selected{% endif %}>
                                 Certificate</option>
-                            <option value="Diploma" {% if request.GET.level=='Diploma' %}selected{% endif %}>Diploma
+                            <option value="Diploma" {% if request.GET.level == 'Diploma' %}selected{% endif %}>Diploma
                             </option>
-                            <option value="Degree" {% if request.GET.level=='Degree' %}selected{% endif %}>Degree
+                            <option value="Degree" {% if request.GET.level == 'Degree' %}selected{% endif %}>Degree
                             </option>
-                            <option value="master" {% if request.GET.level=='master' %}selected{% endif %}>Master
+                            <option value="master" {% if request.GET.level == 'master' %}selected{% endif %}>Master
                             </option>
                         </select>
                     </div>
