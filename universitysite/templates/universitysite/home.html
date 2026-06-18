@@ -39,8 +39,7 @@
             {% for region in region %}
             <li>
                 <a href="{% url 'universitysite:vyuo' region.id %}"
-                    class="block rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 hover:border-sky-400 hover:bg-sky-50">{{
-                    region.name }}</a>
+                    class="block rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 hover:border-sky-400 hover:bg-sky-50">{{ region.name }}</a>
             </li>
             {% endfor %}
         </ul>

@@ -45,8 +45,7 @@
     <div class="mt-4 space-y-2">
         {% for cours in course %}
         <a href="{% url 'universitysite:cou' cours.id %}"
-            class="block rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 hover:border-sky-400 hover:bg-sky-50">{{
-            cours.name }}</a>
+            class="block rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 hover:border-sky-400 hover:bg-sky-50">{{ cours.name }}</a>
         {% empty %}
         <p class="rounded-2xl bg-amber-100 px-4 py-3 text-slate-700">Kozi hazipatikani.</p>
         {% endfor %}
