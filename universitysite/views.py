@@ -5,19 +5,36 @@ from django.core.paginator import Paginator
 def university_list(request):
     university = University.objects.all()
     query = request.GET.get('q')
+    uni_tpe = request.GET.get('umiliki')
+    level = request.GET.get('level')
+    
     if query:
         university = university.filter(name__icontains=query)
+    if uni_tpe:
+        university = university.filter(umiliki__icontains=uni_tpe)
+    if level:
+        university = university.filter(unicourse__level__icontains=level).distinct()
+        
     paginator = Paginator(university, 10)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('university_page')
     university = paginator.get_page(page_number)
     return render(request, 'universitysite/university_list.html', {'university': university})
+
 def course_list(request):
     courses = Course.objects.all()
     query = request.GET.get('q')
+    uni_tpe = request.GET.get('umiliki')
+    level = request.GET.get('level')
+    
     if query:
         courses = courses.filter(name__icontains=query)
+    if uni_tpe:
+        courses = courses.filter(program__university__umiliki__icontains=uni_tpe).distinct()
+    if level:
+        courses = courses.filter(program__level__icontains=level).distinct()
+        
     paginator = Paginator(courses, 10)
-    page_number = request.GET.get('page')
+    page_number = request.GET.get('course_page')
     courses = paginator.get_page(page_number)
     return render(request, 'universitysite/course_list.html', {'course': courses})
 def home(request):
