@@ -6,6 +6,9 @@ urlpatterns = [
     path('home/course/<int:pk>/', views.course_detail, name='course_detail'),
     path('home/university/<int:pk>/', views.univ_detail, name='universi'),
     path('home/<int:pk>/', views.cou_detail, name = 'cou'),
-    path('homes/<int:pk>/', views.vyuo_region, name= 'vyuo'),
+    
     path('home/region/', views.region, name = 'region'),
+    path('home/universities/', views.university_list, name = 'university_list'),
+    path('home/courses/', views.course_list, name = 'course_list'),
+    
 ]
