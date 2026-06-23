@@ -35,22 +35,20 @@ with pdfplumber.open(pdf_path) as pdf:
                 if len(cleaned_row) > 1 and "Program Name" in cleaned_row[1]:
                     continue
                 
-                # Check for University header
-                if first_cell and not first_cell.replace('.', '').isdigit():
-                    if "UNIVERSITY" in first_cell.upper() or "COLLEGE" in first_cell.upper() or "INSTITUTE" in first_cell.upper() or "CENTRE" in first_cell.upper():
-                        parts = first_cell.split('-')
+                filled_cells = [c for c in cleaned_row if c.strip()]
+                
+                # Check for University header (anything that doesn't start with a number, has <= 2 cols)
+                if first_cell and not re.match(r'^\d+', first_cell.strip()):
+                    if "GMT+" in first_cell or "Time)" in first_cell or "Page" in first_cell:
+                        continue
+                    elif "S/N" not in first_cell and "Program" not in first_cell and len(filled_cells) <= 2:
+                        # Extract university name. Since some cells contain "Uni Name - Private\nRegion", we split by newline and dash
+                        clean_text = first_cell.split('\n')[0]
+                        parts = clean_text.split('-')
                         if len(parts) > 1:
                             current_university = parts[0].strip()
-                            ownership = parts[-1].strip()
                         else:
-                            current_university = first_cell.strip()
-                        continue
-                    elif "District" in first_cell or "Region" in first_cell or "Council" in first_cell:
-                        parts = first_cell.split('-')
-                        if len(parts) > 1:
-                            current_region = parts[-1].strip()
-                        else:
-                            current_region = first_cell.strip()
+                            current_university = clean_text.strip()
                         continue
 
                 # Kama ni row mpya ya data (Ina S/N)
