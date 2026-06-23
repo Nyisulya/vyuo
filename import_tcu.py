@@ -37,20 +37,23 @@ def import_data():
         if not uni_name or not prog_name:
             continue
             
-        # 1. Chuo (University)
+        # 1. Chuo (University) - limit 150
+        uni_name_clean = uni_name[:150]
         university, uni_created = University.objects.get_or_create(
-            name=uni_name,
+            name=uni_name_clean,
             defaults={'region': default_region}
         )
         
-        # 2. Kozi (Course)
+        # 2. Kozi (Course) - limit 140
+        prog_name_clean = prog_name[:140]
         course, course_created = Course.objects.get_or_create(
-            name=prog_name
+            name=prog_name_clean
         )
         
-        # 3. Requirement
+        # 3. Requirement - limit 100
+        req_title = f"Sifa za kujiunga {prog_name_clean}"[:100]
         requirement = Requirement.objects.create(
-            title=f"Sifa za kujiunga {prog_name}",
+            title=req_title,
             description=req_text
         )
         
