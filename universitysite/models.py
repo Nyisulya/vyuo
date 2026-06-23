@@ -45,6 +45,48 @@ class Course(models.Model):
         return self.name
     def get_absolute_url(self):
         return reverse('universitysite:cou', kwargs={'pk': self.pk})
+        
+    @property
+    def valid_combinations(self):
+        # Fetch the requirement description for this course
+        # Use the first UniversityCourse that offers it
+        first_uc = self.program.first()
+        if not first_uc or not first_uc.requirements:
+            return []
+            
+        desc = first_uc.requirements.description.lower()
+        
+        # If it accepts any subject, return all combinations
+        if 'any subject' in desc or 'any of the following' in desc or 'any two principal' in desc:
+            return ['PCB', 'PCM', 'CBG', 'PGM', 'EGM', 'ECA', 'HGL', 'HGK', 'HKL', 'CBA', 'HGE', 'CBN']
+            
+        comb_dict = {
+            'PCM': ['physics', 'chemistry', 'mathematics'],
+            'PCB': ['physics', 'chemistry', 'biology'],
+            'CBG': ['chemistry', 'biology', 'geography'],
+            'PGM': ['physics', 'geography', 'mathematics'],
+            'EGM': ['economics', 'geography', 'mathematics'],
+            'ECA': ['economics', 'commerce', 'accountancy'],
+            'HGL': ['history', 'geography', 'english'],
+            'HGK': ['history', 'geography', 'kiswahili'],
+            'HKL': ['history', 'kiswahili', 'english'],
+            'CBA': ['chemistry', 'biology', 'agriculture'],
+            'HGE': ['history', 'geography', 'economics'],
+            'CBN': ['chemistry', 'biology', 'nutrition'],
+        }
+        
+        from itertools import combinations
+        valid = []
+        for comb_name, subjects in comb_dict.items():
+            # Must contain at least two subjects
+            matches = 0
+            for pair in combinations(subjects, 2):
+                if pair[0] in desc and pair[1] in desc:
+                    matches += 1
+                    break
+            if matches > 0:
+                valid.append(comb_name)
+        return valid
 class Requirement(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField()
