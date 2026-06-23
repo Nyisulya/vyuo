@@ -59,8 +59,8 @@
           </div>
           <nav class="flex flex-wrap gap-3 text-sm font-medium text-slate-700 mt-2 sm:mt-0">
             <a href="{% url 'universitysite:home' %}" class="rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200 transition">Nyumbani</a>
-            <a href="#" class="rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200 transition">Jisajili</a>
-            <a href="#" class="rounded-full bg-sky-600 text-white px-4 py-2 hover:bg-sky-700 transition">Ingia</a>
+            <a href="{% url 'universitysite:course_list' %}" class="rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200 transition">Kozi</a>
+            <a href="{% url 'universitysite:university_list' %}" class="rounded-full bg-sky-600 text-white px-4 py-2 hover:bg-sky-700 transition">Vyuo</a>
           </nav>
         </div>
       </header>
@@ -78,10 +78,11 @@
               <a href="{% url 'universitysite:home' %}" class="text-xl font-bold text-sky-400 mb-2 block">VyuoFinder</a>
               <p class="text-slate-400">Portal ya chuo. Mfumo ulioboreshwa kwa urahisi na muonekano mzuri.</p>
             </div>
-            <div class="flex flex-wrap justify-center gap-6">
-              <a href="{% url 'universitysite:about' %}" class="hover:text-sky-400 transition">Kuhusu Sisi</a>
-              <a href="{% url 'universitysite:contact' %}" class="hover:text-sky-400 transition">Wasiliana Nasi</a>
-              <a href="{% url 'universitysite:privacy' %}" class="hover:text-sky-400 transition">Sera ya Faragha</a>
+            <div class="flex flex-wrap justify-center gap-4">
+              <a href="{% url 'universitysite:home' %}" class="rounded-xl bg-slate-800 px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white transition">Nyumbani</a>
+              <a href="{% url 'universitysite:about' %}" class="rounded-xl bg-slate-800 px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white transition">Kuhusu Sisi</a>
+              <a href="{% url 'universitysite:contact' %}" class="rounded-xl bg-slate-800 px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white transition">Wasiliana Nasi</a>
+              <a href="{% url 'universitysite:privacy' %}" class="rounded-xl bg-slate-800 px-4 py-2 text-slate-300 hover:bg-slate-700 hover:text-white transition">Sera ya Faragha</a>
             </div>
           </div>
           <div class="mt-8 pt-4 border-t border-slate-800 text-center text-xs text-slate-500">
