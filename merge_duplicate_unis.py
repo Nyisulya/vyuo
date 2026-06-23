@@ -63,17 +63,14 @@ def merge_universities():
                 
                 print(f"  -> Kozi {moved_courses} zimehamishiwa.")
                 
-                # 2. Kama base haina picha au about, chukua za target
+                # 2. Kama base haina maelezo au mkoa, chukua za target
                 updated = False
-                if not base_uni.image and target_uni.image:
-                    base_uni.image = target_uni.image
-                    updated = True
-                if not base_uni.about and target_uni.about:
-                    base_uni.about = target_uni.about
+                if not base_uni.description and target_uni.description:
+                    base_uni.description = target_uni.description
                     updated = True
                 
                 # Hakikisha chuo kinabaki na mkoa
-                if not base_uni.region and target_uni.region:
+                if not base_uni.region_id and target_uni.region_id:
                     base_uni.region = target_uni.region
                     updated = True
                     
