@@ -92,7 +92,7 @@ class Requirement(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField()
     def __str__(self):
-        return self.title
+        return self.title if self.title else str(self.description)[:50] + "..."
     
 class UniversityCourse(models.Model):
     LEVEL_CHOICE = [
