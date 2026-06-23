@@ -44,8 +44,25 @@ def merge_universities():
             # Safisha jina la target kuondoa mkoa
             target_clean = get_clean_name(target_uni.name)
             
-            # Kama jina la msingi linafanana na jina lililosafishwa la target
-            if base_clean == target_clean and len(base_clean) > 5:
+            is_match = False
+            # 1. Exact match ya jina lililosafishwa
+            if base_clean == target_clean:
+                is_match = True
+            
+            # 2. Substring match (Kama moja inaingia ndani ya nyingine na ni ndefu kiasi)
+            if not is_match and len(base_clean) > 15:
+                if base_clean in target_clean or target_clean in base_clean:
+                    is_match = True
+                    
+            # 3. Fuzzy match kwa majina yanayokaribiana sana (kama tofauti ni the/of/abbreviations)
+            if not is_match:
+                import difflib
+                similarity = difflib.SequenceMatcher(None, base_clean, target_clean).ratio()
+                if similarity > 0.88:
+                    is_match = True
+            
+            # Kama imekidhi vigezo vyote
+            if is_match and len(base_clean) > 5:
                 print(f"\nNAUNGANISHA: '{target_uni.name}' INAINGIA NDANI YA '{base_uni.name}'")
                 
                 # 1. Hamishia kozi zote kwenye base_uni
