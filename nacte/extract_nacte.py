@@ -81,7 +81,7 @@ with pdfplumber.open(pdf_path) as pdf:
                     if cleaned_row[1]:
                         current_row_data["Programme"] += " " + cleaned_row[1]
                     if cleaned_row[2]:
-                        current_row_data["Requirements"] += "\n\nAU\n" + cleaned_row[2]
+                        current_row_data["Requirements"] += " " + cleaned_row[2]
                     # Update other fields if they exist
                     if len(cleaned_row) > 3 and cleaned_row[3]:
                         if current_row_data["Duration"] and current_row_data["Duration"] != cleaned_row[3]:
