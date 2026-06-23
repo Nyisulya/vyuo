@@ -12,6 +12,24 @@
         </div>
     </section>
 
+    {% with first_uni=university.first %}
+    {% if first_uni and first_uni.requirements.all %}
+    <section id="requirements" class="card rounded-3xl p-6 bg-sky-50 border border-sky-100">
+        <h2 class="text-xl font-semibold text-slate-900 flex items-center gap-2">
+            <span>📚</span> Sifa / Combinations Zinazohitajika
+        </h2>
+        <div class="mt-4 space-y-3 text-slate-700">
+            {% for req in first_uni.requirements.all %}
+            <div class="flex gap-3">
+                <span class="text-sky-500 mt-1">✓</span>
+                <p class="leading-relaxed">{{ req.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+    {% endwith %}
+
     <section class="card rounded-3xl p-6">
         <h2 class="text-2xl font-semibold text-slate-900">Vyuo vinavyotoa kozi hii</h2>
         <p class="mt-2 text-sm text-slate-600">Bonyeza jina la chuo ili kuona maelezo ya chuo.</p>
