@@ -6,21 +6,26 @@ from .models import University, Course, Region, UniversityCourse, Requirement
 
 @admin.register(Region)
 class RegionAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['name']
+    list_display = ['name']
 
 @admin.register(Course)
 class CourseAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['name', 'description']
+    list_display = ['name']
 
 @admin.register(University)
 class UniversityAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['name', 'type', 'region__name', 'umiliki']
+    list_display = ['name', 'type', 'region', 'is_active']
+    list_filter = ['type', 'umiliki', 'is_active', 'region']
 
 @admin.register(UniversityCourse)
 class UniversityCourseAdmin(ImportExportModelAdmin):
-    pass
+    search_fields = ['university__name', 'course__name', 'level']
+    list_display = ['university', 'course', 'level', 'duration']
+    list_filter = ['level', 'duration', 'is_active']
 
 @admin.register(Requirement)
 class RequirementAdmin(ImportExportModelAdmin):
-    pass
-    
+    search_fields = ['title', 'description']
