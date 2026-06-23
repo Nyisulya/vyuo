@@ -33,6 +33,37 @@ def course_list(request):
     if level:
         courses = courses.filter(program__level__icontains=level).distinct()
         
+    comb = request.GET.get('combination')
+    if comb:
+        from django.db.models import Q
+        comb_dict = {
+            'PCM': ['Physics', 'Chemistry', 'Mathematics'],
+            'PCB': ['Physics', 'Chemistry', 'Biology'],
+            'CBG': ['Chemistry', 'Biology', 'Geography'],
+            'PGM': ['Physics', 'Geography', 'Mathematics'],
+            'EGM': ['Economics', 'Geography', 'Mathematics'],
+            'ECA': ['Economics', 'Commerce', 'Accountancy'],
+            'HGL': ['History', 'Geography', 'English'],
+            'HGK': ['History', 'Geography', 'Kiswahili'],
+            'HKL': ['History', 'Kiswahili', 'English'],
+            'CBA': ['Chemistry', 'Biology', 'Agriculture'],
+            'HGE': ['History', 'Geography', 'Economics'],
+            'CBN': ['Chemistry', 'Biology', 'Nutrition'],
+        }
+        
+        if comb in comb_dict:
+            subjects = comb_dict[comb]
+            q_objects = Q()
+            for subject in subjects:
+                q_objects |= Q(program__requirements__description__icontains=subject)
+                
+            # Pia ruhusu kozi zinazochukua mtu yeyote
+            q_objects |= Q(program__requirements__description__icontains='any subject')
+            q_objects |= Q(program__requirements__description__icontains='any of the following')
+            q_objects |= Q(program__requirements__description__icontains='any two principal')
+            
+            courses = courses.filter(q_objects).distinct()
+            
     paginator = Paginator(courses, 10)
     page_number = request.GET.get('course_page')
     courses = paginator.get_page(page_number)

@@ -27,6 +27,27 @@
                 </option>
             </select>
         </div>
+        
+        <div>
+            <label class="block text-sm font-medium text-slate-700" for="combination">A-Level Combination</label>
+            <select id="combination" name="combination"
+                class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
+                <option value="">Chagua Combination yako</option>
+                <option value="PCB" {% if request.GET.combination == 'PCB' %}selected{% endif %}>PCB (Physics, Chemistry, Biology)</option>
+                <option value="PCM" {% if request.GET.combination == 'PCM' %}selected{% endif %}>PCM (Physics, Chemistry, Mathematics)</option>
+                <option value="CBG" {% if request.GET.combination == 'CBG' %}selected{% endif %}>CBG (Chemistry, Biology, Geography)</option>
+                <option value="PGM" {% if request.GET.combination == 'PGM' %}selected{% endif %}>PGM (Physics, Geography, Mathematics)</option>
+                <option value="EGM" {% if request.GET.combination == 'EGM' %}selected{% endif %}>EGM (Economics, Geography, Mathematics)</option>
+                <option value="ECA" {% if request.GET.combination == 'ECA' %}selected{% endif %}>ECA (Economics, Commerce, Accountancy)</option>
+                <option value="HGL" {% if request.GET.combination == 'HGL' %}selected{% endif %}>HGL (History, Geography, English)</option>
+                <option value="HGK" {% if request.GET.combination == 'HGK' %}selected{% endif %}>HGK (History, Geography, Kiswahili)</option>
+                <option value="HKL" {% if request.GET.combination == 'HKL' %}selected{% endif %}>HKL (History, Kiswahili, English)</option>
+                <option value="CBA" {% if request.GET.combination == 'CBA' %}selected{% endif %}>CBA (Chemistry, Biology, Agriculture)</option>
+                <option value="HGE" {% if request.GET.combination == 'HGE' %}selected{% endif %}>HGE (History, Geography, Economics)</option>
+                <option value="CBN" {% if request.GET.combination == 'CBN' %}selected{% endif %}>CBN (Chemistry, Biology, Nutrition)</option>
+            </select>
+        </div>
+        
         <button type="submit"
             class="inline-flex w-full items-center justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700">Tumia
             filter</button>
@@ -49,12 +70,12 @@
     </div>
     <div class="mt-6 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
         {% if course.has_previous %}
-        <a href="?course_page={{ course.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}{% if request.GET.umiliki %}&umiliki={{ request.GET.umiliki|urlencode }}{% endif %}{% if request.GET.level %}&level={{ request.GET.level|urlencode }}{% endif %}"
+        <a href="?course_page={{ course.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}{% if request.GET.umiliki %}&umiliki={{ request.GET.umiliki|urlencode }}{% endif %}{% if request.GET.level %}&level={{ request.GET.level|urlencode }}{% endif %}{% if request.GET.combination %}&combination={{ request.GET.combination|urlencode }}{% endif %}"
             class="ajax-pagination rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200">Kabla</a>
         {% endif %}
         <span>Page {{ course.number }} / {{ course.paginator.num_pages }}</span>
         {% if course.has_next %}
-        <a href="?course_page={{ course.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}{% if request.GET.umiliki %}&umiliki={{ request.GET.umiliki|urlencode }}{% endif %}{% if request.GET.level %}&level={{ request.GET.level|urlencode }}{% endif %}"
+        <a href="?course_page={{ course.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q|urlencode }}{% endif %}{% if request.GET.umiliki %}&umiliki={{ request.GET.umiliki|urlencode }}{% endif %}{% if request.GET.level %}&level={{ request.GET.level|urlencode }}{% endif %}{% if request.GET.combination %}&combination={{ request.GET.combination|urlencode }}{% endif %}"
             class="ajax-pagination rounded-full bg-slate-100 px-4 py-2 hover:bg-slate-200">Ijayo</a>
         {% endif %}
     </div>
