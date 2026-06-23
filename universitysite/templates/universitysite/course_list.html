@@ -84,7 +84,7 @@
                     <summary class="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-slate-50 px-4 py-2.5 text-sm font-medium text-slate-700 border border-slate-200 transition-colors hover:bg-slate-100 list-none [&::-webkit-details-marker]:hidden">
                         <span>📚</span> Combinations
                     </summary>
-                    <div class="absolute right-0 sm:left-0 mt-2 w-64 rounded-2xl border border-slate-200 bg-white p-4 shadow-xl z-10">
+                    <div class="absolute right-0 sm:left-auto sm:right-0 mt-2 w-[calc(100vw-3rem)] sm:w-72 max-w-sm rounded-2xl border border-slate-200 bg-white p-4 shadow-xl z-50">
                         <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Valid Combinations</p>
                         <div class="flex flex-wrap gap-2">
                             {% for combo in cours.valid_combinations %}
@@ -172,7 +172,18 @@
             loadResults(url).catch(() => form.submit());
         }
 
-        document.addEventListener('click', handleClick);
+        document.addEventListener('click', function(event) {
+            handleClick(event);
+            
+            // Funga dropdown kama amebonyeza nje
+            const openDetails = document.querySelectorAll('details[open]');
+            openDetails.forEach(detail => {
+                if (!detail.contains(event.target)) {
+                    detail.removeAttribute('open');
+                }
+            });
+        });
+        
         if (filterForm) {
             filterForm.addEventListener('submit', handleSubmit);
         }
