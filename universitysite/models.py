@@ -70,7 +70,7 @@ class UniversityCourse(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='program')
     level = models.CharField(max_length=50, choices=LEVEL_CHOICE)
     duration = models.CharField(max_length=10, choices=DURA_TYPE)
-    requirements = models.ForeignKey(Requirement, on_delete=models.CASCADE, related_name='university', blank=True, null=True)
+    requirements = models.ForeignKey(Requirement, on_delete=models.SET_NULL, related_name='university', blank=True, null=True)
     fee = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     application_link = models.URLField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
