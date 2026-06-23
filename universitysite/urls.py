@@ -11,5 +11,7 @@ urlpatterns = [
     path('home/region/', views.region, name = 'region'),
     path('home/universities/', views.university_list, name = 'university_list'),
     path('home/courses/', views.course_list, name = 'course_list'),
-    
+    path('about/', views.about, name='about'),
+    path('contact/', views.contact, name='contact'),
+    path('privacy/', views.privacy, name='privacy'),
 ]

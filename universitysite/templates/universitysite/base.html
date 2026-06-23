@@ -70,9 +70,22 @@
         {% endblock %}
       </main>
 
-      <footer class="bg-slate-900 text-slate-200">
-        <div class="mx-auto max-w-6xl px-4 py-6 text-center text-sm">
-          <p>Portal ya chuo. Mfumo ulioboreshwa kwa urahisi na muonekano mzuri.</p>
+      <footer class="bg-slate-900 text-slate-200 mt-auto">
+        <div class="mx-auto max-w-6xl px-4 py-8">
+          <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
+            <div class="text-center md:text-left">
+              <a href="{% url 'universitysite:home' %}" class="text-xl font-bold text-sky-400 mb-2 block">VyuoFinder</a>
+              <p class="text-slate-400">Portal ya chuo. Mfumo ulioboreshwa kwa urahisi na muonekano mzuri.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6">
+              <a href="{% url 'universitysite:about' %}" class="hover:text-sky-400 transition">Kuhusu Sisi</a>
+              <a href="{% url 'universitysite:contact' %}" class="hover:text-sky-400 transition">Wasiliana Nasi</a>
+              <a href="{% url 'universitysite:privacy' %}" class="hover:text-sky-400 transition">Sera ya Faragha</a>
+            </div>
+          </div>
+          <div class="mt-8 pt-4 border-t border-slate-800 text-center text-xs text-slate-500">
+            &copy; <script>document.write(new Date().getFullYear())</script> VyuoFinder. Haki zote zimehifadhiwa.
+          </div>
         </div>
       </footer>
     </div>

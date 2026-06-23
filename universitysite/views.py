@@ -90,3 +90,12 @@ def cou_detail(request, pk):
 def region(request):
     region = Region.objects.all()
     return render(request, 'universitysite/region.html', {'region': region})
+
+def about(request):
+    return render(request, 'universitysite/about.html')
+
+def contact(request):
+    return render(request, 'universitysite/contact.html')
+
+def privacy(request):
+    return render(request, 'universitysite/privacy.html')
