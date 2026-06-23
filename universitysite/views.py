@@ -36,6 +36,8 @@ def course_list(request):
     comb = request.GET.get('combination')
     if comb:
         from django.db.models import Q
+        from itertools import combinations
+        
         comb_dict = {
             'PCM': ['Physics', 'Chemistry', 'Mathematics'],
             'PCB': ['Physics', 'Chemistry', 'Biology'],
@@ -54,10 +56,13 @@ def course_list(request):
         if comb in comb_dict:
             subjects = comb_dict[comb]
             q_objects = Q()
-            for subject in subjects:
-                q_objects |= Q(program__requirements__description__icontains=subject)
+            
+            # Tafuta kozi zenye angalau masomo MAWILI ya combination
+            for pair in combinations(subjects, 2):
+                q_objects |= (Q(program__requirements__description__icontains=pair[0]) & 
+                              Q(program__requirements__description__icontains=pair[1]))
                 
-            # Pia ruhusu kozi zinazochukua mtu yeyote
+            # Pia ruhusu kozi zinazochukua mtu yeyote (any subjects)
             q_objects |= Q(program__requirements__description__icontains='any subject')
             q_objects |= Q(program__requirements__description__icontains='any of the following')
             q_objects |= Q(program__requirements__description__icontains='any two principal')
