@@ -20,11 +20,11 @@ def seed_nacte_data(excel_path):
 
     for index, row in df.iterrows():
         # Hakikisha majina yamekamilika
-        uni_name = str(row['University']).strip()
-        region_name = str(row['Region']).strip()
-        prog_name = str(row['Programme']).strip()
+        uni_name = str(row['University']).strip()[:150]
+        region_name = str(row['Region']).strip()[:70]
+        prog_name = str(row['Programme']).strip()[:140]
         req_desc = str(row['Requirements']).strip()
-        ownership = str(row['Ownership']).strip()
+        ownership = str(row['Ownership']).strip()[:30]
         duration = str(row['Duration']).strip()[:10]
         
         # Kuhakikisha fee haina makosa kama ni NaN (Not a Number)
