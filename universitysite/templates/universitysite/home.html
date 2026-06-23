@@ -29,7 +29,31 @@
                 </div>
             </div>
 
-           
+        </div>
+        
+        <div class="mt-8 rounded-2rem border border-sky-100 bg-sky-50 p-6">
+            <h3 class="text-lg font-semibold text-sky-900">Tafuta kozi kwa Combination yako</h3>
+            <p class="mt-1 text-sm text-sky-700">Chagua mchepuo wako wa Kidato cha Sita uone kozi unazoweza kusoma.</p>
+            <form action="{% url 'universitysite:course_list' %}" method="get" class="mt-4 flex flex-col sm:flex-row gap-3">
+                <select name="combination" required class="flex-1 rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-800 shadow-sm outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
+                    <option value="">Chagua Combination...</option>
+                    <option value="PCB">PCB (Physics, Chemistry, Biology)</option>
+                    <option value="PCM">PCM (Physics, Chemistry, Mathematics)</option>
+                    <option value="CBG">CBG (Chemistry, Biology, Geography)</option>
+                    <option value="PGM">PGM (Physics, Geography, Mathematics)</option>
+                    <option value="EGM">EGM (Economics, Geography, Mathematics)</option>
+                    <option value="ECA">ECA (Economics, Commerce, Accountancy)</option>
+                    <option value="HGL">HGL (History, Geography, English)</option>
+                    <option value="HGK">HGK (History, Geography, Kiswahili)</option>
+                    <option value="HKL">HKL (History, Kiswahili, English)</option>
+                    <option value="CBA">CBA (Chemistry, Biology, Agriculture)</option>
+                    <option value="HGE">HGE (History, Geography, Economics)</option>
+                    <option value="CBN">CBN (Chemistry, Biology, Nutrition)</option>
+                </select>
+                <button type="submit" class="rounded-2xl bg-sky-600 px-6 py-3 font-semibold text-white shadow-sm hover:bg-sky-700">
+                    Tafuta Kozi
+                </button>
+            </form>
         </div>
     </section>
     <section class="card rounded-3xl p-6">
