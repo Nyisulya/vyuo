@@ -41,6 +41,7 @@ def course_list(request):
         comb_dict = {
             'PCM': ['Physics', 'Chemistry', 'Mathematics'],
             'PCB': ['Physics', 'Chemistry', 'Biology'],
+            'PMC': ['Physics', 'Mathematics', 'Computer'],
             'CBG': ['Chemistry', 'Biology', 'Geography'],
             'PGM': ['Physics', 'Geography', 'Mathematics'],
             'EGM': ['Economics', 'Geography', 'Mathematics'],

@@ -63,6 +63,7 @@ class Course(models.Model):
         comb_dict = {
             'PCM': ['physics', 'chemistry', 'mathematics'],
             'PCB': ['physics', 'chemistry', 'biology'],
+            'PMC': ['physics', 'mathematics', 'computer'],
             'CBG': ['chemistry', 'biology', 'geography'],
             'PGM': ['physics', 'geography', 'mathematics'],
             'EGM': ['economics', 'geography', 'mathematics'],
