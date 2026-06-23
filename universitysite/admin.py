@@ -17,7 +17,7 @@ class CourseAdmin(ImportExportModelAdmin):
 @admin.register(University)
 class UniversityAdmin(ImportExportModelAdmin):
     search_fields = ['name', 'type', 'region__name', 'umiliki']
-    list_display = ['name', 'type', 'region', 'is_active']
+    list_display = ['name', 'type', 'region', 'umiliki']
     list_filter = ['type', 'umiliki', 'is_active', 'region']
 
 @admin.register(UniversityCourse)
