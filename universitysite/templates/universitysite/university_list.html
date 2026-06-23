@@ -1,32 +1,36 @@
 {% extends 'universitysite/base.html' %}
 {% block content %}
-       <div class="rounded-2rem border border-slate-200 bg-slate-50 p-6 shadow-sm">
-                <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Filter</p>
-                <h2 class="mt-3 text-2xl font-semibold text-slate-900">Punguza matokeo</h2>
-                <form id="filter-form" method="get" class="space-y-4 mt-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700" for="filter-query">Tafuta kwenye
-                            site</label>
-                        <input id="filter-query" name="q" type="text" value="{{ request.GET.q }}"
-                            placeholder="tafuta chuo au kozi"
-                            class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700" for="umiliki">Aina ya chuo</label>
-                        <select id="umiliki" name="umiliki"
-                            class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
-                            <option value="">Chagua aina ya chuo</option>
+<div class="rounded-2rem border border-slate-200/60 bg-white/80 backdrop-blur-md p-6 shadow-sm">
+    <div class="flex items-center justify-between">
+        <div>
+            <p class="text-sm uppercase tracking-[0.35em] text-slate-500">Filter</p>
+            <h2 class="mt-1 text-2xl font-semibold text-slate-900">Punguza matokeo</h2>
+        </div>
+        <a href="{% url 'universitysite:university_list' %}" class="rounded-xl bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200">Futa Filter</a>
+    </div>
+    <form id="filter-form" method="get" class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-4 items-end">
+        <div>
+            <label class="block text-sm font-medium text-slate-700" for="filter-query">Tafuta chuo</label>
+            <input id="filter-query" name="q" type="text" value="{{ request.GET.q }}"
+                placeholder="mfano: UDSM"
+                class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white/50 px-4 py-3 text-slate-900 shadow-sm outline-none transition-all focus:bg-white focus:ring-2 focus:ring-sky-500">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-slate-700" for="umiliki">Aina ya chuo</label>
+            <select id="umiliki" name="umiliki"
+                class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white/50 px-4 py-3 text-slate-900 shadow-sm outline-none transition-all focus:bg-white focus:ring-2 focus:ring-sky-500">
+                <option value="">Chagua aina ya chuo</option>
                             <option value="Goverment" {% if request.GET.umiliki == 'Goverment' %}selected{% endif %}>
                                 Serikali</option>
                             <option value="Private" {% if request.GET.umiliki == 'Private' %}selected{% endif %}>Binafsi
                             </option>
                         </select>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-700" for="level">Kiwango</label>
-                        <select id="level" name="level"
-                            class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-slate-900 shadow-sm outline-none">
-                            <option value="">Chagua level</option>
+        <div>
+            <label class="block text-sm font-medium text-slate-700" for="level">Kiwango</label>
+            <select id="level" name="level"
+                class="focus-ring mt-2 w-full rounded-2xl border border-slate-300 bg-white/50 px-4 py-3 text-slate-900 shadow-sm outline-none transition-all focus:bg-white focus:ring-2 focus:ring-sky-500">
+                <option value="">Chagua level</option>
                             <option value="Certificate" {% if request.GET.level == 'Certificate' %}selected{% endif %}>
                                 Certificate</option>
                             <option value="Diploma" {% if request.GET.level == 'Diploma' %}selected{% endif %}>Diploma
@@ -37,11 +41,15 @@
                             </option>
                         </select>
                     </div>
-                    <button type="submit"
-                        class="inline-flex w-full items-center justify-center rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white hover:bg-sky-700">Tumia
-                        filter</button>
-                </form>
-            </div>
+        <button type="submit"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-sky-600 px-5 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-sky-700 hover:shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+            </svg>
+            Tafuta
+        </button>
+    </form>
+</div>
         <section id="university-results" class="card rounded-3xl p-6">
             <h2 class="text-xl font-semibold text-slate-900">Vyuo</h2>
             <p class="mt-2 text-sm text-slate-600">Angalia vyuo vyote vinavyopatikana.</p>
