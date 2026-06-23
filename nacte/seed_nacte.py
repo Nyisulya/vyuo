@@ -25,7 +25,7 @@ def seed_nacte_data(excel_path):
         prog_name = str(row['Programme']).strip()
         req_desc = str(row['Requirements']).strip()
         ownership = str(row['Ownership']).strip()
-        duration = str(row['Duration']).strip()
+        duration = str(row['Duration']).strip()[:10]
         
         # Kuhakikisha fee haina makosa kama ni NaN (Not a Number)
         fee_value = row['Fee']
