@@ -9,7 +9,7 @@ django.setup()
 from universitysite.models import Region, University, Course, Requirement, UniversityCourse
 
 def import_data():
-    excel_file = "tcu/tcu_data.xlsx"
+    excel_file = "tcu/tcu_data_cleaned.xlsx"
     
     print("Ninasoma faili la Excel...")
     df = pd.read_excel(excel_file)
