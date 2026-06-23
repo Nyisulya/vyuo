@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 class Region(models.Model):
@@ -33,6 +34,8 @@ class University(models.Model):
         ordering = ['name']
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('universitysite:universi', kwargs={'pk': self.pk})
 class Course(models.Model):
     name = models.CharField(max_length=140, unique=True)
     description = models.TextField(blank=True)
@@ -40,6 +43,8 @@ class Course(models.Model):
         ordering = ['name']
     def __str__(self):
         return self.name
+    def get_absolute_url(self):
+        return reverse('universitysite:cou', kwargs={'pk': self.pk})
 class Requirement(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField()

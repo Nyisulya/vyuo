@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vyuotanzania.nyisu.com/sitemap.xml
