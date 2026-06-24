@@ -114,8 +114,12 @@ class Command(BaseCommand):
             ))
             return
 
-        BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent.parent
+        # commands/ → management/ → universitysite/ → project_root/
+        # parent×1     parent×2       parent×3          parent×4
+        BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
         output_path = Path(output) if output else BASE_DIR / "combined_data.xlsx"
+        self.stdout.write(f"  BASE_DIR: {BASE_DIR}")
+        self.stdout.write(f"  Output:   {output_path}")
 
         # ── Chagua chanzo ────────────────────────────────────────────────────
         if source == "auto":
