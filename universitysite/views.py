@@ -136,3 +136,48 @@ def contact(request):
 
 def privacy(request):
     return render(request, 'universitysite/privacy.html')
+
+def download_excel(request):
+    """
+    Download combined_data.xlsx moja kwa moja kupitia browser.
+    Inalindwa na login + staff tu (admin). 
+    URL: /download/combined-excel/
+    """
+    import os
+    from pathlib import Path
+    from django.http import FileResponse, Http404
+    from django.contrib.admin.views.decorators import staff_member_required
+    from django.contrib.auth.decorators import login_required
+
+    # Ruhusu staff/admin tu - au ondoa check hii kama unataka public
+    if not request.user.is_authenticated or not request.user.is_staff:
+        from django.contrib.auth.views import redirect_to_login
+        return redirect_to_login(request.get_full_path())
+
+    # Pata njia ya faili (manage.py ipo hapa)
+    BASE_DIR = Path(__file__).resolve().parent.parent
+    excel_path = BASE_DIR / "combined_data.xlsx"
+
+    if not excel_path.exists():
+        # Jaribu kutengeneza kwa haraka
+        try:
+            from django.core.management import call_command
+            call_command("export_combined_excel", verbosity=0)
+        except Exception:
+            pass
+
+    if not excel_path.exists():
+        raise Http404(
+            "Faili la Excel halipatikani. "
+            "Endesha: python manage.py export_combined_excel"
+        )
+
+    from datetime import datetime
+    filename = f"vyuo_data_{datetime.now().strftime('%Y%m%d')}.xlsx"
+
+    response = FileResponse(
+        open(excel_path, "rb"),
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    return response
