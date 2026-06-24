@@ -143,10 +143,13 @@ def preview_or_import(do_import=False):
 
             if do_import:
                 course, _ = Course.objects.get_or_create(name=c['programme'][:140])
-                req, _ = Requirement.objects.get_or_create(
-                    description=c['requirements'],
-                    defaults={'title': f"Sifa - {c['programme'][:80]}"}
-                )
+                # Tumia filter().first() badala ya get_or_create kuepuka MultipleObjectsReturned
+                req = Requirement.objects.filter(description=c['requirements']).first()
+                if not req:
+                    req = Requirement.objects.create(
+                        description=c['requirements'],
+                        title=f"Sifa - {c['programme'][:80]}"
+                    )
                 uc, uc_created = UniversityCourse.objects.get_or_create(
                     university=university,
                     course=course,
