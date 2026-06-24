@@ -24,10 +24,9 @@ def run_cleanup():
             uc.delete()
             deleted_courses += 1
             
-    print(f"\nJumla ya kozi 'nusu' zilizofutwa: {deleted_courses}\n")
+    print(f"\nJumla ya kozi 'nusu' zilizofutwa awamu hii: {deleted_courses}\n")
     
     # 2. Kufuta vyuo ambavyo ni 'takataka' (havina maana)
-    # Kwa mfano vinaanza na '(ACSEE)' au vina maneno 'pass', 'advantage'
     bad_keywords = ['acsee', 'principal pass', 'subsidiary', 'advantage', 'mathematics', 'administration.', 'subjects.', 'chemistry and biology']
     all_unis = University.objects.all()
     deleted_unis = 0
@@ -39,13 +38,16 @@ def run_cleanup():
             u.delete()
             deleted_unis += 1
             
-    print(f"\nJumla ya vyuo takataka vilivyofutwa: {deleted_unis}\n")
+    print(f"\nJumla ya vyuo takataka vilivyofutwa awamu hii: {deleted_unis}\n")
     
     # 3. Kufuta vyuo visivyo na kozi yoyote
-    empty_unis = University.objects.filter(universitycourse__isnull=True)
+    # 'unicourse' ni related_name iliyotumika kwenye model yako
+    empty_unis = University.objects.filter(unicourse__isnull=True)
     empty_count = empty_unis.count()
     if empty_count > 0:
         print(f"Inafuta vyuo {empty_count} visivyo na kozi yoyote...")
+        for eu in empty_unis:
+            print(f"Inafuta chuo kitupu: {eu.name}")
         empty_unis.delete()
         
     print("="*60)
