@@ -1,8 +1,13 @@
 """
-Script ya kuongeza courses za DIT na CFR ambazo hazikupatikana kwenye PDF extraction.
-Hii script ni READ-ONLY kwanza - inaonyesha itakachofanya kabla ya kutekeleza.
+Script ya kuongeza kozi za vyuo vilivyokosekana:
+1. Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR), Dar es Salaam
+2. Dar es Salaam Institute of Technology (DIT), Dar es Salaam
+3. Dar es Salaam Institute of Technology (DIT), Mwanza Campus
 
-Data imethibitishwa moja kwa moja kutoka PDF ukurasa 60-62 (DIT) na 43-44 (CFR).
+Data imetolewa kutoka kwenye kitabu cha TCU (Admission Guidebook 2025/2026).
+
+MAELEKEZO: Endesha hii kwenye VPS:
+  python add_dit_cfr_courses.py
 """
 import os
 import django
@@ -12,173 +17,197 @@ django.setup()
 
 from universitysite.models import Region, University, Course, Requirement, UniversityCourse
 
-# ============================================================
-# DATA ILIYOTHIBITISHWA KUTOKA PDF
-# ============================================================
 
-DIT_DAR_COURSES = [
-    {
-        'programme': 'Bachelor of Engineering in Civil Engineering',
-        'code': 'DT001',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Computer Engineering',
-        'code': 'DT002',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Electrical Engineering',
-        'code': 'DT003',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Electronics and Telecommunication Engineering',
-        'code': 'DT004',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Mechanical Engineering',
-        'code': 'DT005',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Oil and Gas Engineering',
-        'code': 'DT006',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Technology in Laboratory Science',
-        'code': 'DT007',
-        'requirements': 'Two principal passes in Advanced Mathematics, Physics, Chemistry and Biology, with not less than four passes at O-Level including Basic Mathematics and Physics with an institutional minimum point of 4.0.',
-        'duration': '3',
-    },
-    {
-        'programme': 'Bachelor of Mining Engineering',
-        'code': 'DT008',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics.',
-        'duration': '4',
-    },
-    {
-        'programme': 'Bachelor of Engineering in Biomedical Engineering',
-        'code': 'DT009',
-        'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant MUST HAVE at least a pass in Basic Mathematics and Physics at O-Level.',
-        'duration': '4',
-    },
-]
+def add_courses():
+    # ==========================================
+    # 1. CFR - Centre for Foreign Relations
+    # ==========================================
+    cfr_region, _ = Region.objects.get_or_create(name="Dar es Salaam")
+    cfr_uni, cfr_created = University.objects.get_or_create(
+        name="Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR), Dar es Salaam",
+        defaults={
+            'region': cfr_region,
+            'type': 'Non University',
+            'umiliki': 'Goverment',
+            'is_active': True,
+        }
+    )
+    if cfr_created:
+        print(f"✓ Chuo kimeongezwa: {cfr_uni.name}")
+    else:
+        print(f"  Chuo tayari kipo: {cfr_uni.name}")
 
-DIT_MWANZA_COURSES = [
-    {
-        'programme': 'Bachelor of Technology in Laboratory Science',
-        'code': 'DTM001',
-        'requirements': 'Two principal passes in Advanced Mathematics, Physics, Chemistry and Biology, with not less than four passes at O-Level, including Basic Mathematics and Physics.',
-        'duration': '3',
-    },
-]
+    cfr_courses = [
+        {
+            'name': 'Bachelor Degree in International Relations and Diplomacy',
+            'code': 'CFR01',
+            'requirements': 'Two principal passes in the following subjects: History, Geography, Kiswahili, English Language, Literature in English, French, Arabic, Fine Arts, Economics, Commerce, Accountancy, Physics, Chemistry, Biology, Advanced Mathematics, Agriculture, Computer Science or Nutrition.',
+            'duration': '3',
+        },
+        {
+            'name': 'Bachelor Degree in Governance and Strategic Leadership',
+            'code': 'CFR02',
+            'requirements': 'Two principal passes in the following subjects: History, Geography, Kiswahili, English Language, Literature in English, French, Arabic, Fine Arts, Economics, Commerce, Accountancy, Physics, Chemistry, Biology, Advanced Mathematics, Agriculture, Computer Science or Nutrition.',
+            'duration': '3',
+        },
+    ]
 
-CFR_COURSES = [
-    {
-        'programme': 'Bachelor Degree in International Relations and Diplomacy',
-        'code': 'CFR01',
-        'requirements': 'Two principal passes in History, Geography, Kiswahili, English Language, Literature in English, French, Arabic, Fine Arts, Economics, Commerce, Accountancy, Physics, Chemistry, Biology, Advanced Mathematics, Agriculture, Computer Science or Nutrition.',
-        'duration': '3',
-    },
-    {
-        'programme': 'Bachelor Degree in Governance and Strategic Leadership',
-        'code': 'CFR02',
-        'requirements': 'Two principal passes in History, Geography, Kiswahili, English Language, Literature in English, French, Arabic, Fine Arts, Economics, Commerce, Accountancy, Physics, Chemistry, Biology, Advanced Mathematics, Agriculture, Computer Science or Nutrition.',
-        'duration': '3',
-    },
-]
+    # ==========================================
+    # 2. DIT Dar es Salaam
+    # ==========================================
+    dit_region, _ = Region.objects.get_or_create(name="Dar es Salaam")
+    dit_uni, dit_created = University.objects.get_or_create(
+        name="Dar es Salaam Institute of Technology (DIT), Dar es Salaam",
+        defaults={
+            'region': dit_region,
+            'type': 'Institute',
+            'umiliki': 'Goverment',
+            'website': 'www.dit.ac.tz',
+            'is_active': True,
+        }
+    )
+    if dit_created:
+        print(f"✓ Chuo kimeongezwa: {dit_uni.name}")
+    else:
+        print(f"  Chuo tayari kipo: {dit_uni.name}")
 
-UNIVERSITIES_DATA = [
-    {
-        'name': 'Dar es Salaam Institute of Technology (DIT), Dar es Salaam',
-        'region': 'Dar es Salaam',
-        'courses': DIT_DAR_COURSES,
-    },
-    {
-        'name': 'Dar es Salaam Institute of Technology (DIT), Mwanza Campus',
-        'region': 'Mwanza',
-        'courses': DIT_MWANZA_COURSES,
-    },
-    {
-        'name': 'Dr. Salim Ahmed Salim Centre for Foreign Relations (CFR), Dar es Salaam',
-        'region': 'Dar es Salaam',
-        'courses': CFR_COURSES,
-    },
-]
+    dit_dar_courses = [
+        {
+            'name': 'Bachelor of Engineering in Civil Engineering',
+            'code': 'DT001',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Computer Engineering',
+            'code': 'DT002',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Electrical Engineering',
+            'code': 'DT003',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Electronics and Telecommunication Engineering',
+            'code': 'DT004',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Mechanical Engineering',
+            'code': 'DT005',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant must have at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Oil and Gas Engineering',
+            'code': 'DT006',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Technology in Laboratory Science',
+            'code': 'DT007',
+            'requirements': 'Two principal passes in the following subjects: Advanced Mathematics, Physics, Chemistry and Biology, with not less than four passes at O-Level including Basic Mathematics and Physics with an institutional minimum point of 4.0.',
+            'duration': '3',
+        },
+        {
+            'name': 'Bachelor of Mining Engineering',
+            'code': 'DT008',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics.',
+            'duration': '4',
+        },
+        {
+            'name': 'Bachelor of Engineering in Biomedical Engineering',
+            'code': 'DT009',
+            'requirements': 'Two principal passes in Physics and Advanced Mathematics. An applicant MUST HAVE at least a pass in Basic Mathematics and Physics at O-Level.',
+            'duration': '4',
+        },
+    ]
 
+    # ==========================================
+    # 3. DIT Mwanza Campus
+    # ==========================================
+    mwanza_region, _ = Region.objects.get_or_create(name="Mwanza")
+    dit_mwanza, dit_mwanza_created = University.objects.get_or_create(
+        name="Dar es Salaam Institute of Technology (DIT), Mwanza Campus",
+        defaults={
+            'region': mwanza_region,
+            'type': 'Institute',
+            'umiliki': 'Goverment',
+            'website': 'www.dit.ac.tz',
+            'is_active': True,
+        }
+    )
+    if dit_mwanza_created:
+        print(f"✓ Chuo kimeongezwa: {dit_mwanza.name}")
+    else:
+        print(f"  Chuo tayari kipo: {dit_mwanza.name}")
 
-def preview_or_import(do_import=False):
-    total_courses = sum(len(u['courses']) for u in UNIVERSITIES_DATA)
-    print(f"{'KUINGIZA' if do_import else 'PREVIEW (Hakuna kinachowekwa bado)'}")
-    print(f"Vyuo: {len(UNIVERSITIES_DATA)}, Kozi: {total_courses}")
-    print("="*60)
+    dit_mwanza_courses = [
+        {
+            'name': 'Bachelor of Technology in Laboratory Science',
+            'code': 'DTM001',
+            'requirements': 'Two principal passes in the following subjects: Advanced Mathematics, Physics, Chemistry and Biology.',
+            'duration': '3',
+        },
+    ]
 
-    for uni_data in UNIVERSITIES_DATA:
-        print(f"\nCHUO: {uni_data['name']}")
-        print(f"  Mkoa: {uni_data['region']}")
-        print(f"  Kozi ({len(uni_data['courses'])}):")
+    # ==========================================
+    # IMPORT FUNCTION
+    # ==========================================
+    def import_courses(university, courses_data):
+        count = 0
+        for c in courses_data:
+            # Course
+            course, _ = Course.objects.get_or_create(name=c['name'][:140])
 
-        if do_import:
-            region, _ = Region.objects.get_or_create(name=uni_data['region'])
-            university, uni_created = University.objects.get_or_create(
-                name=uni_data['name'],
-                defaults={'region': region, 'type': 'Institute', 'umiliki': 'Goverment', 'is_active': True}
+            # Requirement
+            req_title = f"Sifa za kujiunga {c['name']}"[:100]
+            requirement = Requirement.objects.create(
+                title=req_title,
+                description=c['requirements']
             )
-            if uni_created:
-                print(f"  [KIPYA] Chuo kimetengenezwa")
+
+            # UniversityCourse
+            uc, uc_created = UniversityCourse.objects.get_or_create(
+                university=university,
+                course=course,
+                level="Degree",
+                defaults={
+                    'duration': c['duration'],
+                    'requirements': requirement,
+                }
+            )
+            if uc_created:
+                print(f"  ✓ Kozi imeongezwa: {c['name']} ({c['code']})")
+                count += 1
             else:
-                print(f"  [TAYARI KIPO] Chuo kinapatikana")
+                # Update requirements
+                uc.requirements = requirement
+                uc.duration = c['duration']
+                uc.save()
+                print(f"  ↻ Kozi imesasishwa: {c['name']} ({c['code']})")
+                count += 1
+        return count
 
-        for c in uni_data['courses']:
-            print(f"    - [{c['code']}] {c['programme']} (Miaka: {c['duration']})")
+    total = 0
+    print(f"\n--- Kuingiza kozi za CFR ---")
+    total += import_courses(cfr_uni, cfr_courses)
 
-            if do_import:
-                course, _ = Course.objects.get_or_create(name=c['programme'][:140])
-                # Tumia filter().first() badala ya get_or_create kuepuka MultipleObjectsReturned
-                req = Requirement.objects.filter(description=c['requirements']).first()
-                if not req:
-                    req = Requirement.objects.create(
-                        description=c['requirements'],
-                        title=f"Sifa - {c['programme'][:80]}"
-                    )
-                uc, uc_created = UniversityCourse.objects.get_or_create(
-                    university=university,
-                    course=course,
-                    level='Degree',
-                    defaults={
-                        'duration': c['duration'],
-                        'requirements': req,
-                    }
-                )
-                status = "MPYA" if uc_created else "TAYARI KIPO"
-                print(f"      [{status}]")
+    print(f"\n--- Kuingiza kozi za DIT Dar es Salaam ---")
+    total += import_courses(dit_uni, dit_dar_courses)
+
+    print(f"\n--- Kuingiza kozi za DIT Mwanza ---")
+    total += import_courses(dit_mwanza, dit_mwanza_courses)
 
     print(f"\n{'='*60}")
-    if do_import:
-        print("KAZI IMEKAMILIKA!")
-    else:
-        print("PREVIEW TU - Endesha na 'do_import=True' kuingiza kweli.")
+    print(f"IMEKAMILIKA! Jumla ya kozi zilizoingizwa: {total}")
+    print(f"{'='*60}")
 
 
 if __name__ == '__main__':
-    import sys
-    if len(sys.argv) > 1 and sys.argv[1] == '--import':
-        print("TAHADHARI: Unaingiza data kwenye production database!")
-        confirm = input("Je, unataka kuendelea? (ndio/hapana): ")
-        if confirm.strip().lower() == 'ndio':
-            preview_or_import(do_import=True)
-        else:
-            print("Imesitishwa.")
-    else:
-        preview_or_import(do_import=False)
-        print("\nKukubaliana na preview, endesha:")
-        print("  python add_dit_cfr_courses.py --import")
+    add_courses()

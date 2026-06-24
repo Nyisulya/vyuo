@@ -2,6 +2,7 @@ import os
 import sys
 import django
 import pandas as pd
+import re
 
 # Set up Django environment
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -9,6 +10,14 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vyuofinder.settings')
 django.setup()
 
 from universitysite.models import Region, University, Course, Requirement, UniversityCourse
+
+def clean_uni_name(name):
+    name = str(name).strip()
+    # Remove REG/... or other parenthetical stuff at the end
+    name = re.sub(r'\([^\)]+\)$', '', name).strip()
+    # Handle cases like (REG/HAS/139) that might not be at the very end
+    name = re.sub(r'\(REG/[^\)]+\)', '', name).strip()
+    return name[:150]
 
 def seed_nacte_data(excel_path):
     print(f"Tunasoma data kutoka: {excel_path} ...")
@@ -20,7 +29,8 @@ def seed_nacte_data(excel_path):
 
     for index, row in df.iterrows():
         # Hakikisha majina yamekamilika
-        uni_name = str(row['University']).strip()[:150]
+        raw_uni_name = str(row['University']).strip()
+        uni_name = clean_uni_name(raw_uni_name)
         region_name = str(row['Region']).strip()[:70]
         prog_name = str(row['Programme']).strip()[:140]
         req_desc = str(row['Requirements']).strip()
@@ -83,6 +93,6 @@ def seed_nacte_data(excel_path):
 if __name__ == '__main__':
     excel_file = 'nacte_data2.xlsx'
     if not os.path.exists(excel_file):
-        print(f"Faili la Excel '{excel_file}' halipo. Tafadhali run 'extract_nacte.py' kwanza.")
+        print(f"Faili la Excel '{excel_file}' halipo. Tafadhali run 'extract_nacte2.py' kwanza.")
     else:
         seed_nacte_data(excel_file)

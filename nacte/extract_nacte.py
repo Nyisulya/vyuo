@@ -29,26 +29,33 @@ with pdfplumber.open(pdf_path) as pdf:
                 
             for row in table:
                 cleaned_row = [str(cell).replace('\n', ' ').strip() if cell else "" for cell in row]
-                first_cell = cleaned_row[0] if len(cleaned_row) > 0 else ""
                 
                 # Check for table header
                 if len(cleaned_row) > 1 and "Program Name" in cleaned_row[1]:
                     continue
                 
                 filled_cells = [c for c in cleaned_row if c.strip()]
+                if not filled_cells:
+                    continue
+                    
+                first_filled = filled_cells[0]
                 
                 # Check for University header (anything that doesn't start with a number, has <= 2 cols)
-                if first_cell and not re.match(r'^\d+', first_cell.strip()):
-                    if "GMT+" in first_cell or "Time)" in first_cell or "Page" in first_cell:
+                if not re.match(r'^\d+', first_filled):
+                    if "GMT+" in first_filled or "Time)" in first_filled or "Page" in first_filled:
                         continue
-                    elif "S/N" not in first_cell and "Program" not in first_cell and len(filled_cells) <= 2:
-                        # Extract university name. Since some cells contain "Uni Name - Private\nRegion", we split by newline and dash
-                        clean_text = first_cell.split('\n')[0]
-                        parts = clean_text.split('-')
-                        if len(parts) > 1:
-                            current_university = parts[0].strip()
+                    elif "S/N" not in first_filled and "Program Name" not in first_filled and len(filled_cells) <= 2:
+                        if "District" in first_filled or "Municipal" in first_filled or "City" in first_filled or "Council" in first_filled:
+                            # It's probably the region line
+                            current_region = first_filled.split('-')[-1].strip()
                         else:
-                            current_university = clean_text.strip()
+                            # Extract university name. Since some cells contain "Uni Name - Private\nRegion", we split by newline and dash
+                            clean_text = first_filled.split('\n')[0]
+                            parts = clean_text.split('-')
+                            if len(parts) > 1:
+                                current_university = parts[0].strip()
+                            else:
+                                current_university = clean_text.strip()
                         continue
 
                 # Kama ni row mpya ya data (Ina S/N)
@@ -74,7 +81,7 @@ with pdfplumber.open(pdf_path) as pdf:
                         "Fee": fee_clean
                     }
                 # Kama ni muendelezo wa row iliyopita (Haina S/N lakini ina data)
-                elif current_row_data and len(cleaned_row) >= 3 and not first_cell:
+                elif current_row_data and len(cleaned_row) >= 3 and not cleaned_row[0].replace('.', '').isdigit():
                     # Append text to existing fields
                     if cleaned_row[1]:
                         current_row_data["Programme"] += " " + cleaned_row[1]
