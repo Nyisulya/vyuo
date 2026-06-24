@@ -1,25 +1,47 @@
 """
 Script kwa ajili ya kusafisha database kwenye VPS kabla ya ku-run seed scripts mpya.
 1. Inafuta "Unknown University" na kozi zake (zitaingizwa upya na seed_nacte.py)
-2. Ina-merge vyuo vilivyo duplicate (mf. vyenye (REG/...)) kwenda kwenye jina kuu
+2. Ina-merge vyuo vilivyo duplicate (mf. ST. JOSEPH na ST JOSEPH, au vyenye (REG/...)) kwenda kwenye jina kuu
 
 MALEKEZO: Endesha hii kwenye VPS kabla ya seed scripts
   python cleanup_nacte_vps.py
 """
 import os
+import sys
 import django
 import re
 
+# Set up Django environment
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vyuofinder.settings')
 django.setup()
 
 from universitysite.models import University, UniversityCourse
-from django.db.models import Count
 
 def clean_uni_name(name):
-    name = str(name).strip()
+    name = str(name).strip().upper()
+    
+    # Remove REG/... or other parenthetical stuff at the end or anywhere
     name = re.sub(r'\([^\)]+\)$', '', name).strip()
     name = re.sub(r'\(REG/[^\)]+\)', '', name).strip()
+    
+    # Remove common abbreviations that cause duplicates
+    name = name.replace('(IAA)', '')
+    name = name.replace('(IFM)', '')
+    name = name.replace('(KCDI)', '')
+    name = name.replace('(NCT)', '')
+    name = name.replace('(TPSC)', '')
+    
+    # Remove punctuation (like periods, commas)
+    name = re.sub(r'[^\w\s]', '', name)
+    
+    # Remove extra spaces
+    name = re.sub(r'\s+', ' ', name).strip()
+    
+    # Custom fixes for known hard duplicates
+    if name == 'TABORA EA POLYTECHNIC COLLEGE':
+        name = 'TABORA EAST AFRICA POLYTECHNIC COLLEGE'
+        
     return name
 
 def run_cleanup():
@@ -56,9 +78,12 @@ def run_cleanup():
     for cleaned_name, unis in clean_to_unis.items():
         if len(unis) > 1:
             print(f"\nDuplicate zimekutwa kwa: '{cleaned_name}'")
-            # Chagua chuo kimoja kama "Base" (mfano chenye jina fupi au kisicho na REG)
-            # Au chukua cha kwanza tu
+            # Chagua chuo kimoja kama "Base". 
+            # Tunapendelea chenye jina fupi au kisicho na (REG)
             unis.sort(key=lambda x: len(x.name))
+            
+            # Kama kuna "ST." kwenye kimoja, pengine tunataka hicho kiwe base kwasababu ni rasmi zaidi, 
+            # Lakini for now the shortest one is usually the cleanest.
             base_uni = unis[0]
             duplicates = unis[1:]
             
