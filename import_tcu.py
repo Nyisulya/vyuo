@@ -37,11 +37,25 @@ def import_data():
         if not uni_name or not prog_name:
             continue
             
+        # Extract region from university name if possible
+        uni_region = default_region
+        regions_list = [
+            'Dar es Salaam', 'Dodoma', 'Mwanza', 'Mbeya', 'Arusha', 'Morogoro', 
+            'Tanga', 'Tabora', 'Zanzibar', 'Pemba', 'Kilimanjaro', 'Iringa', 
+            'Singida', 'Mtwara', 'Kigoma', 'Shinyanga', 'Lindi', 'Ruvuma', 
+            'Mara', 'Geita', 'Katavi', 'Rukwa', 'Simiyu', 'Njombe', 'Manyara', 
+            'Pwani', 'Kagera'
+        ]
+        for reg in regions_list:
+            if reg.lower() in uni_name.lower():
+                uni_region, _ = Region.objects.get_or_create(name=reg)
+                break
+
         # 1. Chuo (University) - limit 150
         uni_name_clean = uni_name[:150]
         university, uni_created = University.objects.get_or_create(
             name=uni_name_clean,
-            defaults={'region': default_region}
+            defaults={'region': uni_region}
         )
         
         # 2. Kozi (Course) - limit 140
