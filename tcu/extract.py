@@ -9,25 +9,32 @@ all_data = []
 
 print("Kuanza kusoma PDF, tafadhali subiri... (Hii inaweza kuchukua dakika kadhaa)")
 
+def fix_cell_text(text):
+    if not text:
+        return ""
+    lines = [line.strip() for line in str(text).split('\n') if line.strip()]
+    if len(lines) > 1:
+        for idx, line in enumerate(lines):
+            if idx > 0 and line.startswith(('Bachelor', 'Master', 'Doctor', 'Diploma', 'Certificate', 'Ordinary', 'BSc', 'BA', 'BEd')):
+                front = lines.pop(idx)
+                lines.insert(0, front)
+                break
+    return " ".join(lines)
+
 with pdfplumber.open(pdf_path) as pdf:
     current_university = "Unknown University"
+    current_row_data = None
     
-    # We skip first 20 pages or so which are usually introductions.
-    # Let's process from page 20 to the end just to be safe, or just process all pages.
     for i, page in enumerate(pdf.pages):
         tables = page.extract_tables(table_settings={"text_x_tolerance": 1.5})
         for table in tables:
-            # table is a list of lists (rows of columns)
             if not table or len(table) < 2:
                 continue
                 
             for row in table:
-                # Clean up row (replace None with empty string and strip newlines)
-                cleaned_row = [str(cell).replace('\n', ' ').strip() if cell else "" for cell in row]
+                cleaned_row = [fix_cell_text(cell) for cell in row]
                 
                 # Check if this row is a University Header
-                # TCU tables often have the university name in the first row spanning all columns
-                # So if the first cell has text and the rest are mostly empty, or it just looks like a header:
                 if len(cleaned_row) > 0 and any(kw in cleaned_row[0] for kw in ["University", "College", "Institute", "Centre", "Center", "Academy", "Training"]) and "Programme" not in cleaned_row[0]:
                     current_university = cleaned_row[0]
                     continue
@@ -38,28 +45,38 @@ with pdfplumber.open(pdf_path) as pdf:
                 
                 # If it's a valid data row (S/N is usually a number)
                 if len(cleaned_row) >= 4 and cleaned_row[0].strip().replace('.', '').isdigit():
+                    if current_row_data:
+                        all_data.append(current_row_data)
+                        
                     programme = cleaned_row[1]
                     code = cleaned_row[2]
                     requirements = cleaned_row[3]
-                    
-                    # Some tables might have duration and capacity
                     duration = cleaned_row[-1] if len(cleaned_row) > 4 else ""
                     
-                    all_data.append({
+                    current_row_data = {
                         "University": current_university,
                         "Programme": programme,
                         "Code": code,
                         "Requirements": requirements,
                         "Duration": duration
-                    })
+                    }
+                # Continuation row (no S/N)
+                elif current_row_data and len(cleaned_row) >= 4 and not cleaned_row[0].strip().replace('.', '').isdigit():
+                    # If this row has some data but no S/N, it belongs to the previous course
+                    if cleaned_row[1]:
+                        current_row_data["Programme"] += " " + cleaned_row[1]
+                    if cleaned_row[2]:
+                        current_row_data["Code"] += " " + cleaned_row[2]
+                    if cleaned_row[3]:
+                        current_row_data["Requirements"] += " " + cleaned_row[3]
+                        
+    if current_row_data:
+        all_data.append(current_row_data)
 
         if (i+1) % 50 == 0:
             print(f"Peeji {i+1} zimesomwa...")
 
-# Create DataFrame
 df = pd.DataFrame(all_data)
-
-# Save to Excel
 df.to_excel(output_excel, index=False)
 
 print(f"Imekamilika! Faili limehifadhiwa kama {output_excel}")

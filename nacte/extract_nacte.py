@@ -5,20 +5,14 @@ import os
 
 pdf_path = "nacte_guidebook.pdf"
 output_excel = "nacte_data.xlsx"
-
 all_data = []
 
-print("Kuanza kusoma PDF ya NACTE (iliyoboreshwa), tafadhali subiri...")
-
-if not os.path.exists(pdf_path):
-    print(f"KOSA: Sioni faili la '{pdf_path}'.")
-    exit()
+print("Kuanza kusoma PDF ya NACTE, tafadhali subiri...")
 
 with pdfplumber.open(pdf_path) as pdf:
     current_university = "Unknown University"
     current_region = "Unknown Region"
     ownership = "Unknown"
-    
     current_row_data = None
     
     for i, page in enumerate(pdf.pages):
@@ -29,82 +23,89 @@ with pdfplumber.open(pdf_path) as pdf:
                 
             for row in table:
                 cleaned_row = [str(cell).replace('\n', ' ').strip() if cell else "" for cell in row]
-                
-                # Check for table header
-                if len(cleaned_row) > 1 and "Program Name" in cleaned_row[1]:
-                    continue
-                
                 filled_cells = [c for c in cleaned_row if c.strip()]
+                
                 if not filled_cells:
                     continue
                     
                 first_filled = filled_cells[0]
                 
-                # Check for University header (anything that doesn't start with a number, has <= 2 cols)
-                if not re.match(r'^\d+', first_filled):
-                    if "GMT+" in first_filled or "Time)" in first_filled or "Page" in first_filled:
-                        continue
-                    elif "S/N" not in first_filled and "Program Name" not in first_filled and len(filled_cells) <= 2:
-                        if "District" in first_filled or "Municipal" in first_filled or "City" in first_filled or "Council" in first_filled:
-                            # It's probably the region line
+                # Check for University header: Needs to contain ' - Private' or ' - Public', 
+                # OR be a long uppercase string.
+                if "S/N" not in first_filled and "Program Name" not in first_filled and len(filled_cells) <= 2:
+                    if "District" in first_filled or "Municipal" in first_filled or "City" in first_filled or "Council" in first_filled:
+                        pass
+                    elif " - " in first_filled or (first_filled.isupper() and len(first_filled) > 10):
+                        if '-' in first_filled:
                             current_region = first_filled.split('-')[-1].strip()
-                        else:
-                            # Extract university name. Since some cells contain "Uni Name - Private\nRegion", we split by newline and dash
                             clean_text = first_filled.split('\n')[0]
                             parts = clean_text.split('-')
                             if len(parts) > 1:
+                                ownership = parts[1].strip()
                                 current_university = parts[0].strip()
-                            else:
-                                current_university = clean_text.strip()
+                        else:
+                            current_university = first_filled.strip()
                         continue
-
-                # Kama ni row mpya ya data (Ina S/N)
+                
+                # Valid Data Row
                 if len(cleaned_row) >= 6 and cleaned_row[0].replace('.', '').isdigit():
-                    # Save the previous row before starting a new one
                     if current_row_data:
                         all_data.append(current_row_data)
                         
+                    programme = cleaned_row[1]
+                    code = cleaned_row[2]
+                    duration = cleaned_row[3]
+                    capacity = cleaned_row[4]
                     fee = cleaned_row[5]
+                    
+                    # Clean capacity and fee
+                    cap_clean = 0
+                    if capacity.isdigit():
+                        cap_clean = int(capacity)
+                        
                     fee_clean = 0
                     fee_str = re.sub(r'[^\d]', '', fee.split('Foreign')[0] if 'Foreign' in fee else fee)
                     if fee_str:
                         fee_clean = int(fee_str)
-
+                        
                     current_row_data = {
                         "University": current_university,
                         "Region": current_region,
                         "Ownership": ownership,
-                        "Programme": cleaned_row[1],
-                        "Requirements": cleaned_row[2],
-                        "Duration": cleaned_row[3],
-                        "Capacity": cleaned_row[4],
-                        "Fee": fee_clean
+                        "Programme": programme,
+                        "Code": code,
+                        "Duration": duration,
+                        "Capacity": cap_clean,
+                        "Fee": fee_clean,
+                        "Requirements": ""
                     }
-                # Kama ni muendelezo wa row iliyopita (Haina S/N lakini ina data)
+                    
+                # Continuation row for requirements or programme name
                 elif current_row_data and len(cleaned_row) >= 3 and not cleaned_row[0].replace('.', '').isdigit():
-                    # Append text to existing fields
+                    # Check if this row is just continuing the programme name (col 1) or reqs (col 2)
                     if cleaned_row[1]:
                         current_row_data["Programme"] += " " + cleaned_row[1]
                     if cleaned_row[2]:
                         current_row_data["Requirements"] += " " + cleaned_row[2]
-                    # Update other fields if they exist
+                        
                     if len(cleaned_row) > 3 and cleaned_row[3]:
                         if current_row_data["Duration"] and current_row_data["Duration"] != cleaned_row[3]:
-                             current_row_data["Duration"] += f" / {cleaned_row[3]}"
-                        else:
                              current_row_data["Duration"] = cleaned_row[3]
+                             
                     if len(cleaned_row) > 5 and cleaned_row[5] and current_row_data["Fee"] == 0:
                         fee = cleaned_row[5]
                         fee_str = re.sub(r'[^\d]', '', fee.split('Foreign')[0] if 'Foreign' in fee else fee)
                         if fee_str:
                             current_row_data["Fee"] = int(fee_str)
-
-    # Save the very last row
+                            
     if current_row_data:
         all_data.append(current_row_data)
+
+        if (i+1) % 50 == 0:
+            print(f"Peeji {i+1} zimesomwa...")
 
 df = pd.DataFrame(all_data)
 df.to_excel(output_excel, index=False)
 
-print(f"\nImekamilika! Faili limehifadhiwa kama {output_excel}")
+print(f"Imekamilika! Faili limehifadhiwa kama {output_excel}")
 print(f"Jumla ya kozi zilizopatikana: {len(df)}")
