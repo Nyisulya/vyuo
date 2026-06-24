@@ -12,11 +12,13 @@ from universitysite.models import University, UniversityCourse
 
 def get_clean_name(name):
     """
-    Remove location markers like '- Dar es Salaam', ', Morogoro', '(Mbeya)'
-    to get the core university name.
+    Get clean name for comparison, ignoring parentheses with acronyms
+    but keeping location/campus markers to avoid merging branches.
     """
-    # Ondoa kila kitu kuanzia kwenye -, ( au ,
-    clean_name = re.sub(r'[-,\(].*$', '', name).strip().lower()
+    # Ondoa tu acronyms zilizo kwenye mabano kama (SAUT), (CBE) lakini baki na mikoa/kampasi
+    clean_name = re.sub(r'\([A-Z\s]+\)', '', name)
+    # Safisha nafasi zilizozidi
+    clean_name = re.sub(r'\s+', ' ', clean_name).strip().lower()
     return clean_name
 
 def merge_universities():
