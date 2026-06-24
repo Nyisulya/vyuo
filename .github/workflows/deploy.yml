@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy using SSH
+      - name: Deploy & Export Excel on VPS
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -17,10 +17,43 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT }}
           script: |
-                cd /var/www/vyuo
-                git pull origin main
-                source venv/bin/activate
-                pip install -r requirements.txt
-                python3 manage.py migrate
-                python3 manage.py collectstatic --noinput
-                sudo systemctl restart gunicorn
+            set -e
+            echo "========================================"
+            echo "  DEPLOY KUANZA..."
+            echo "========================================"
+
+            cd /var/www/vyuo
+
+            # ── 1. Pakua mabadiliko mapya ────────────────
+            echo "[1/6] git pull..."
+            git pull origin main
+
+            # ── 2. Washa virtual environment ─────────────
+            echo "[2/6] Kuwasha venv..."
+            source venv/bin/activate
+
+            # ── 3. Install/update packages ───────────────
+            echo "[3/6] pip install..."
+            pip install -r requirements.txt --quiet
+
+            # ── 4. Migrate database ───────────────────────
+            echo "[4/6] migrate..."
+            python3 manage.py migrate --noinput
+
+            # ── 5. Collect static files ──────────────────
+            echo "[5/6] collectstatic..."
+            python3 manage.py collectstatic --noinput --quiet
+
+            # ── 6. Export Excel mpya (vitabu vitatu) ─────
+            echo "[6/6] Kutengeneza Excel iliyounganishwa..."
+            python3 manage.py export_combined_excel --source excel || \
+              python3 export_combined_excel.py || \
+              echo "  [ONYO] Export haikufanikiwa, endelea..."
+
+            # ── 7. Restart server ─────────────────────────
+            echo "[7/7] Kuanzisha upya gunicorn..."
+            sudo systemctl restart gunicorn
+
+            echo "========================================"
+            echo "  DEPLOY IMEKAMILIKA!"
+            echo "========================================"
