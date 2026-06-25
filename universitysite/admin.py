@@ -55,7 +55,6 @@ class UniversityCourseResource(resources.ModelResource):
 
 @admin.register(UniversityCourse)
 class UniversityCourseAdmin(ImportExportModelAdmin):
-    resource_class = UniversityCourseResource
     resource_classes = [UniversityCourseResource]
     search_fields = ['university__name', 'course__name', 'level']
     list_display = ['university', 'course', 'level', 'duration']
