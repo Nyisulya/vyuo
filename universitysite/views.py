@@ -60,13 +60,13 @@ def course_list(request):
             
             # Tafuta kozi zenye angalau masomo MAWILI ya combination
             for pair in combinations(subjects, 2):
-                q_objects |= (Q(program__requirements__description__icontains=pair[0]) & 
-                              Q(program__requirements__description__icontains=pair[1]))
+                q_objects |= (Q(program__requirements__icontains=pair[0]) & 
+                              Q(program__requirements__icontains=pair[1]))
                 
             # Pia ruhusu kozi zinazochukua mtu yeyote (any subjects)
-            q_objects |= Q(program__requirements__description__icontains='any subject')
-            q_objects |= Q(program__requirements__description__icontains='any of the following')
-            q_objects |= Q(program__requirements__description__icontains='any two principal')
+            q_objects |= Q(program__requirements__icontains='any subject')
+            q_objects |= Q(program__requirements__icontains='any of the following')
+            q_objects |= Q(program__requirements__icontains='any two principal')
             
             courses = courses.filter(q_objects).distinct()
             

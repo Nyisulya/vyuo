@@ -54,7 +54,7 @@ class Course(models.Model):
         if not first_uc or not first_uc.requirements:
             return []
             
-        desc = first_uc.requirements.description.lower()
+        desc = first_uc.requirements.lower()
         
         # If it accepts any subject, return all combinations
         if 'any subject' in desc or 'any of the following' in desc or 'any two principal' in desc:
@@ -88,12 +88,7 @@ class Course(models.Model):
             if matches > 0:
                 valid.append(comb_name)
         return valid
-class Requirement(models.Model):
-    title = models.CharField(max_length=100, null=True, blank=True)
-    description = models.TextField()
-    def __str__(self):
-        return self.title if self.title else str(self.description)[:50] + "..."
-    
+
 class UniversityCourse(models.Model):
     LEVEL_CHOICE = [
         ('Certificate', 'Certificate'),
@@ -113,7 +108,7 @@ class UniversityCourse(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='program')
     level = models.CharField(max_length=50, choices=LEVEL_CHOICE)
     duration = models.CharField(max_length=10, choices=DURA_TYPE)
-    requirements = models.ForeignKey(Requirement, on_delete=models.SET_NULL, related_name='university', blank=True, null=True)
+    requirements = models.TextField(blank=True, null=True)
     fee = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
     application_link = models.URLField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
