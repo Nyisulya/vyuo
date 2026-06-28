@@ -1,0 +1,50 @@
+{% extends "universitysite/base.html" %}
+
+{% block content %}
+<div class="container mt-5 pt-5 mb-5" style="min-height: 60vh;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Upload Excel ya Vyuo (Moja kwa Moja)</h3>
+                </div>
+                <div class="card-body">
+                    {% if success %}
+                        <div class="alert alert-success">
+                            <h4><i class="fas fa-check-circle"></i> Imefanikiwa!</h4>
+                            <p>Faili la Excel limesomwa na data zimeingizwa kwenye database kikamilifu.</p>
+                            <ul>
+                                <li><strong>Kozi/Vyuo vilivyoingizwa au ku-update-iwa:</strong> {{ imported_count }}</li>
+                                <li><strong>Mistari iliyoachwa (skipped):</strong> {{ skipped_count }}</li>
+                            </ul>
+                            <p>Unaweza kurudi kwenye <a href="{% url 'universitysite:home' %}">ukurasa wa mwanzo</a> au kupakia faili jingine.</p>
+                        </div>
+                    {% endif %}
+
+                    {% if error %}
+                        <div class="alert alert-danger">
+                            <h4><i class="fas fa-exclamation-triangle"></i> Hitilafu (Error)</h4>
+                            <p>{{ error }}</p>
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="excel_file" class="form-label">Chagua faili la Excel (.xlsx)</label>
+                            <input class="form-control" type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" required>
+                            <div class="form-text">
+                                Faili hili linatakiwa kuwa na columns hizi: 
+                                <code>Jina la chuo, Mkoa, Umiliki (private/government), Courses, Requirements, Duration, Type (university/institute)</code>.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-upload"></i> Upload na Ingiza Kwenye Mfumo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

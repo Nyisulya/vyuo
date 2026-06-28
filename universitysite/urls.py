@@ -15,4 +15,5 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('privacy/', views.privacy, name='privacy'),
     path('download/combined-excel/', views.download_excel, name='download_excel'),
+    path('upload-excel/', views.upload_excel, name='upload_excel'),
 ]
