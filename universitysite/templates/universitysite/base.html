@@ -27,6 +27,7 @@
     </script>
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
       body {
         font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -74,22 +75,80 @@
         {% endblock %}
       </main>
 
-      <footer class="bg-slate-900 text-slate-200 mt-auto">
-        <div class="mx-auto max-w-6xl px-4 py-8">
-          <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
-            <div class="text-center md:text-left">
-              <a href="{% url 'universitysite:home' %}" class="text-xl font-bold text-sky-400 mb-2 block">VyuoFinder</a>
-              <p class="text-slate-400">Portal ya chuo. Mfumo ulioboreshwa kwa urahisi na muonekano mzuri.</p>
+      <footer class="bg-slate-950 text-slate-200 mt-auto border-t border-slate-800/80">
+        <div class="mx-auto max-w-6xl px-6 py-12 lg:py-16">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <!-- Column 1: Brand & Social -->
+            <div class="space-y-4 col-span-1 md:col-span-1">
+              <a href="{% url 'universitysite:home' %}" class="text-2xl font-bold text-sky-400 flex items-center gap-2">
+                <i class="fas fa-graduation-cap"></i> VyuoFinder
+              </a>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                Portal ya uhakika ya vyuo na kozi mbalimbali nchini Tanzania. Tafuta na ulinganishe kwa urahisi zaidi ili kufanya maamuzi sahihi ya baadaye yako.
+              </p>
+              <div class="flex gap-4 pt-2">
+                <a href="#" class="h-9 w-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-600 hover:text-white hover:border-sky-500 transition-all"><i class="fab fa-facebook-f text-sm"></i></a>
+                <a href="#" class="h-9 w-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-600 hover:text-white hover:border-sky-500 transition-all"><i class="fab fa-twitter text-sm"></i></a>
+                <a href="#" class="h-9 w-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-600 hover:text-white hover:border-sky-500 transition-all"><i class="fab fa-instagram text-sm"></i></a>
+                <a href="#" class="h-9 w-9 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-slate-400 hover:bg-sky-600 hover:text-white hover:border-sky-500 transition-all"><i class="fab fa-linkedin-in text-sm"></i></a>
+              </div>
             </div>
-            <div class="flex flex-wrap justify-center gap-4">
-              <a href="{% url 'universitysite:home' %}" class="rounded-xl px-4 py-2 transition {% if request.resolver_match.url_name == 'home' %}bg-sky-500/20 text-sky-400 font-semibold ring-1 ring-sky-500/50{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">Nyumbani</a>
-              <a href="{% url 'universitysite:about' %}" class="rounded-xl px-4 py-2 transition {% if request.resolver_match.url_name == 'about' %}bg-sky-500/20 text-sky-400 font-semibold ring-1 ring-sky-500/50{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">Kuhusu Sisi</a>
-              <a href="{% url 'universitysite:contact' %}" class="rounded-xl px-4 py-2 transition {% if request.resolver_match.url_name == 'contact' %}bg-sky-500/20 text-sky-400 font-semibold ring-1 ring-sky-500/50{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">Wasiliana Nasi</a>
-              <a href="{% url 'universitysite:privacy' %}" class="rounded-xl px-4 py-2 transition {% if request.resolver_match.url_name == 'privacy' %}bg-sky-500/20 text-sky-400 font-semibold ring-1 ring-sky-500/50{% else %}bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white{% endif %}">Sera ya Faragha</a>
+            
+            <!-- Column 2: Quick Links -->
+            <div class="space-y-4">
+              <h4 class="text-sm font-bold tracking-wider text-slate-100 uppercase">Njia za Haraka</h4>
+              <ul class="space-y-2.5 text-sm text-slate-400">
+                <li><a href="{% url 'universitysite:home' %}" class="hover:text-sky-400 transition-colors"><i class="fas fa-angle-right text-[10px] mr-1.5"></i> Nyumbani</a></li>
+                <li><a href="{% url 'universitysite:course_list' %}" class="hover:text-sky-400 transition-colors"><i class="fas fa-angle-right text-[10px] mr-1.5"></i> Kozi Zote</a></li>
+                <li><a href="{% url 'universitysite:university_list' %}" class="hover:text-sky-400 transition-colors"><i class="fas fa-angle-right text-[10px] mr-1.5"></i> Vyuo Vyote</a></li>
+                <li><a href="{% url 'universitysite:about' %}" class="hover:text-sky-400 transition-colors"><i class="fas fa-angle-right text-[10px] mr-1.5"></i> Kuhusu Sisi</a></li>
+              </ul>
             </div>
+            
+            <!-- Column 3: Contact Info -->
+            <div class="space-y-4">
+              <h4 class="text-sm font-bold tracking-wider text-slate-100 uppercase">Wasiliana Nasi</h4>
+              <ul class="space-y-3 text-sm text-slate-400">
+                <li class="flex items-start gap-2.5">
+                  <i class="fas fa-envelope text-sky-500 mt-1"></i>
+                  <span>info@vyuofinder.co.tz</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i class="fas fa-phone text-sky-500 mt-1"></i>
+                  <span>+255 712 345 678</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i class="fas fa-map-marker-alt text-sky-500 mt-1"></i>
+                  <span>Dar es Salaam, Tanzania</span>
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Column 4: Newsletter/Info -->
+            <div class="space-y-4">
+              <h4 class="text-sm font-bold tracking-wider text-slate-100 uppercase">Udahili wa Vyuo</h4>
+              <p class="text-sm text-slate-400 leading-relaxed">
+                Tunaweka taarifa mpya kila mara kuhusu udahili na tarehe za mwisho za kuomba vyuo kutoka TCU na NACTE.
+              </p>
+              <div class="pt-2">
+                <span class="inline-flex items-center gap-1.5 rounded-xl bg-sky-950 px-3 py-2 text-xs font-semibold text-sky-400 border border-sky-900">
+                  <span class="h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse"></span> Udahili Umefunguliwa
+                </span>
+              </div>
+            </div>
+            
           </div>
-          <div class="mt-8 pt-4 border-t border-slate-800 text-center text-xs text-slate-500">
-            &copy; <script>document.write(new Date().getFullYear())</script> VyuoFinder. Haki zote zimehifadhiwa.
+          
+          <div class="mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div>
+              &copy; <script>document.write(new Date().getFullYear())</script> VyuoFinder. Haki zote zimehifadhiwa.
+            </div>
+            <div class="flex gap-4">
+              <a href="{% url 'universitysite:privacy' %}" class="hover:text-slate-300 transition-colors">Sera ya Faragha</a>
+              <span>&bull;</span>
+              <a href="{% url 'universitysite:contact' %}" class="hover:text-slate-300 transition-colors">Wasiliana Nasi</a>
+            </div>
           </div>
         </div>
       </footer>
