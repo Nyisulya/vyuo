@@ -249,13 +249,13 @@ def upload_excel(request):
                 
                 if not uni_created:
                     updated = False
-                    if uni_type and not university.type:
+                    if uni_type:
                         university.type = uni_type
                         updated = True
-                    if umiliki and not university.umiliki:
+                    if umiliki:
                         university.umiliki = umiliki
                         updated = True
-                    if region and university.region != region:
+                    if region:
                         university.region = region
                         updated = True
                     if updated:
