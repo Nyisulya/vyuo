@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Region, University, Course, UniversityCourse
+from .models import Region, University, Course, UniversityCourse, Feedback
 from django.core.paginator import Paginator
 from django.contrib.admin.views.decorators import staff_member_required
 # Create your views here.
