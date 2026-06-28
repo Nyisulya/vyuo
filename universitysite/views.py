@@ -269,8 +269,14 @@ def upload_excel(request):
                 uni_name_clean = uni_name[:150]
                 uni_type = uni_type[:40] if uni_type != 'nan' else None
                 umiliki = umiliki[:30] if umiliki != 'nan' else None
-                if umiliki and umiliki.lower() == 'public':
-                    umiliki = 'Goverment'
+                if umiliki:
+                    umiliki_lower = umiliki.lower()
+                    if 'gov' in umiliki_lower or 'pub' in umiliki_lower:
+                        umiliki = 'Goverment'
+                    elif 'priv' in umiliki_lower:
+                        umiliki = 'Private'
+                    else:
+                        umiliki = None
                 
                 # Tafuta chuo kwa jina bila kujali herufi kubwa/ndogo
                 uni_list = University.objects.filter(name__iexact=uni_name_clean)
