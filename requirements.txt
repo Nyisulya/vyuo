@@ -11,3 +11,6 @@ psycopg2-binary==2.9.12
 sqlparse==0.5.5
 tzdata==2026.2
 django-import-export
+pandas
+openpyxl
+python-calamine

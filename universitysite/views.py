@@ -196,7 +196,24 @@ def upload_excel(request):
         excel_file = request.FILES['excel_file']
         
         try:
-            df = pd.read_excel(excel_file)
+            # Jaribu kusoma na headers kwanza
+            df = pd.read_excel(excel_file, engine='calamine')
+            
+            # Angalia kama Excel ina headers sahihi au la
+            expected_cols = ['Jina la chuo', 'Mkoa', 'Courses']
+            has_headers = all(col in df.columns for col in expected_cols)
+            
+            if not has_headers:
+                # Soma upya bila headers na uweke mwenyewe
+                excel_file.seek(0)
+                df = pd.read_excel(excel_file, header=None, engine='calamine')
+                # Chukua columns 8 za kwanza tu
+                df = df.iloc[:, :8]
+                col_names = ['Jina la chuo', 'Mkoa', 'Umiliki (private/government)', 
+                           'Courses', 'Requirements', 'Duration', 
+                           'Type (university/institute)', 'Fee']
+                df.columns = col_names[:len(df.columns)]
+            
             total_imported = 0
             total_skipped = 0
             
