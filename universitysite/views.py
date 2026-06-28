@@ -273,10 +273,14 @@ def upload_excel(request):
                     umiliki = 'Goverment'
                 
                 # Tafuta chuo kwa jina bila kujali herufi kubwa/ndogo
-                try:
-                    university = University.objects.get(name__iexact=uni_name_clean)
+                uni_list = University.objects.filter(name__iexact=uni_name_clean)
+                if uni_list.exists():
+                    university = uni_list.first()
                     uni_created = False
-                except University.DoesNotExist:
+                    # Kama kuna duplicates za chuo hiki, zifute zibaki moja tu ya kwanza
+                    if uni_list.count() > 1:
+                        University.objects.filter(name__iexact=uni_name_clean).exclude(id=university.id).delete()
+                else:
                     university = University.objects.create(
                         name=uni_name_clean,
                         region=region,
@@ -298,13 +302,17 @@ def upload_excel(request):
                 
                 course_name_clean = course_name[:140]
                 # Tafuta kozi kwa jina bila kujali herufi kubwa/ndogo
-                try:
-                    course = Course.objects.get(name__iexact=course_name_clean)
+                course_list = Course.objects.filter(name__iexact=course_name_clean)
+                if course_list.exists():
+                    course = course_list.first()
+                    # Kama kuna duplicates za kozi hii, zifute
+                    if course_list.count() > 1:
+                        Course.objects.filter(name__iexact=course_name_clean).exclude(id=course.id).delete()
                     # Update jina kama herufi zimebadilika
                     if course.name != course_name_clean:
                         course.name = course_name_clean
                         course.save()
-                except Course.DoesNotExist:
+                else:
                     course = Course.objects.create(name=course_name_clean)
                 
                 req_text = req_text if req_text != 'nan' else ""
