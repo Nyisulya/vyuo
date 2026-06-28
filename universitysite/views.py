@@ -247,7 +247,14 @@ def upload_excel(request):
                 else:
                     region_name_clean = "Tanzania"
                     
-                region, _ = Region.objects.get_or_create(name=region_name_clean)
+                region, _ = Region.objects.get_or_create(
+                    name__iexact=region_name_clean,
+                    defaults={'name': region_name_clean}
+                )
+                # Update region name kama herufi zimebadilika
+                if region.name != region_name_clean:
+                    region.name = region_name_clean
+                    region.save()
                 
                 uni_name_clean = uni_name[:150]
                 uni_type = uni_type[:40] if uni_type != 'nan' else None
@@ -255,31 +262,40 @@ def upload_excel(request):
                 if umiliki and umiliki.lower() == 'public':
                     umiliki = 'Goverment'
                 
-                university, uni_created = University.objects.get_or_create(
-                    name=uni_name_clean,
-                    defaults={
-                        'region': region,
-                        'type': uni_type,
-                        'umiliki': umiliki
-                    }
-                )
+                # Tafuta chuo kwa jina bila kujali herufi kubwa/ndogo
+                try:
+                    university = University.objects.get(name__iexact=uni_name_clean)
+                    uni_created = False
+                except University.DoesNotExist:
+                    university = University.objects.create(
+                        name=uni_name_clean,
+                        region=region,
+                        type=uni_type,
+                        umiliki=umiliki
+                    )
+                    uni_created = True
                 
                 if not uni_created:
-                    updated = False
+                    # Daima update taarifa zote za chuo
+                    university.name = uni_name_clean
                     if uni_type:
                         university.type = uni_type
-                        updated = True
                     if umiliki:
                         university.umiliki = umiliki
-                        updated = True
                     if region:
                         university.region = region
-                        updated = True
-                    if updated:
-                        university.save()
+                    university.save()
                 
                 course_name_clean = course_name[:140]
-                course, _ = Course.objects.get_or_create(name=course_name_clean)
+                # Tafuta kozi kwa jina bila kujali herufi kubwa/ndogo
+                try:
+                    course = Course.objects.get(name__iexact=course_name_clean)
+                    # Update jina kama herufi zimebadilika
+                    if course.name != course_name_clean:
+                        course.name = course_name_clean
+                        course.save()
+                except Course.DoesNotExist:
+                    course = Course.objects.create(name=course_name_clean)
                 
                 req_text = req_text if req_text != 'nan' else ""
                 
