@@ -1,76 +1,135 @@
 {% extends 'universitysite/base.html' %}
+{% load static %}
 
-{% block title %}Vyuo vya kati na vyuo vikuu vyote{% endblock %}
+{% block title %}Vyuo vya kati na vyuo vikuu vyote Tanzania - VyuoFinder{% endblock %}
 
 {% block content %}
-<div class="space-y-6">
-    <section class="card rounded-3xl p-6">
-        <div class="grid gap-6 xl:grid-cols-[1.75fr_1fr]">
-            <div class="space-y-6">
-                <div>
-                    <p class="text-sm uppercase tracking-[0.3em] text-sky-600">Karibu</p>
-                    <h1 class="mt-2 text-3xl font-semibold tracking-tight text-slate-900">Chagua chuo au kozi kwa
-                        urahisi</h1>
-                    <p class="mt-3 max-w-2xl text-slate-600">Tafuta kwa mkoa, chuo, au kozi na ugundue taarifa kwa
-                        muundo uliopangwa vizuri.</p>
+<div class="space-y-8">
+    
+    <!-- Hero Section na Picha ya Background -->
+    <div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
+        <!-- Picha ya background yenye opacity ya chini -->
+        <div class="absolute inset-0 z-0">
+            <img src="{% static 'universitysite/images/hero_banner.png' %}" alt="Vyuo Tanzania" class="h-full w-full object-cover object-center opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 mx-auto max-w-4xl px-6 py-16 sm:py-20 lg:px-8">
+            <span class="inline-flex items-center rounded-full bg-sky-500/20 px-3 py-1 text-xs font-semibold text-sky-300 ring-1 ring-sky-500/30">
+                🎓 Mfumo Mpya na Rahisi
+            </span>
+            <h1 class="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
+                Tafuta Chuo au Kozi unayotaka kwa urahisi zaidi
+            </h1>
+            <p class="mt-4 max-w-2xl text-lg text-slate-300">
+                Gundua vyuo vikuu na vyuo vya kati vyote Tanzania, sifa zao za kujiunga, ada na muda wa masomo katika sehemu moja.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+                <a href="{% url 'universitysite:university_list' %}"
+                    class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-sky-500 hover:shadow-sky-500/30 transition-all hover:-translate-y-0.5">
+                    Angalia Vyuo Vyote ({{ university.paginator.count }})
+                </a>
+                <a href="{% url 'universitysite:course_list' %}"
+                    class="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-md hover:bg-white/20 transition-all hover:-translate-y-0.5">
+                    Tafuta Kozi Zote ({{ course.paginator.count }})
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Grid: Kushoto ni Tafuta kwa Combination, Kulia ni Matangazo & Mikoa -->
+    <div class="grid gap-8 lg:grid-cols-[2fr_1fr]">
+        
+        <!-- Upande wa Kushoto: Tafuta kwa Mchepuo -->
+        <div class="space-y-6">
+            <div class="card rounded-3xl border border-sky-100 bg-sky-50/50 p-6 backdrop-blur-sm">
+                <div class="flex items-center gap-3">
+                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-600 text-white shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">Tafuta kozi kwa Combination yako</h3>
+                        <p class="text-sm text-slate-500">Chagua mchepuo wako wa Kidato cha Sita (A-Level) uone kozi unazoweza kusoma.</p>
+                    </div>
                 </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="{% url 'universitysite:university_list' %}"
-                        class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Angalia vyuo vyote</a>
-                    <span
-                        class="inline-flex items-center rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">Matokeo:
-                        {{ university.paginator.count }} vyuo</span>
+                
+                <form action="{% url 'universitysite:course_list' %}" method="get" class="mt-6 flex flex-col sm:flex-row gap-3">
+                    <select name="combination" required class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/25 transition">
+                        <option value="">Chagua Combination...</option>
+                        <option value="PCB">PCB (Physics, Chemistry, Biology)</option>
+                        <option value="PCM">PCM (Physics, Chemistry, Mathematics)</option>
+                        <option value="PMC">PMC (Physics, Mathematics, Computer)</option>
+                        <option value="CBG">CBG (Chemistry, Biology, Geography)</option>
+                        <option value="PGM">PGM (Physics, Geography, Mathematics)</option>
+                        <option value="EGM">EGM (Economics, Geography, Mathematics)</option>
+                        <option value="ECA">ECA (Economics, Commerce, Accountancy)</option>
+                        <option value="HGL">HGL (History, Geography, English)</option>
+                        <option value="HGK">HGK (History, Geography, Kiswahili)</option>
+                        <option value="HKL">HKL (History, Kiswahili, English)</option>
+                        <option value="CBA">CBA (Chemistry, Biology, Agriculture)</option>
+                        <option value="HGE">HGE (History, Geography, Economics)</option>
+                        <option value="CBN">CBN (Chemistry, Biology, Nutrition)</option>
+                    </select>
+                    <button type="submit" class="rounded-2xl bg-sky-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-sky-600/20 hover:bg-sky-700 hover:shadow-sky-700/30 transition hover:-translate-y-0.5">
+                        Tafuta Kozi
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Quick Features -->
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div class="card rounded-3xl p-6 hover:shadow-lg transition-all">
+                    <h4 class="font-bold text-slate-800 text-lg">🏫 Vyuo vya Kati & Vikuu</h4>
+                    <p class="text-sm text-slate-500 mt-2">Pata taarifa za Vyuo vikuu vilivyosajiliwa na TCU pamoja na vyuo vya kati vilivyosajiliwa na NACTE.</p>
                 </div>
-                <div class="flex flex-wrap gap-3">
-                    <a href="{% url 'universitysite:course_list' %}"
-                        class="inline-flex items-center justify-center rounded-2xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white hover:bg-slate-800">Angalia course zote</a>
-                    <span class="inline-flex items-center rounded-2xl bg-slate-100 px-4 py-3 text-sm text-slate-700">Matokeo:
-                        {{ course.paginator.count }} kozi</span>
+                <div class="card rounded-3xl p-6 hover:shadow-lg transition-all">
+                    <h4 class="font-bold text-slate-800 text-lg">💰 Ada & Sifa</h4>
+                    <p class="text-sm text-slate-500 mt-2">Ulinganifu wa ada na sifa za kujiunga unamsaidia mwanafunzi au mzazi kufanya maamuzi sahihi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upande wa Kulia: Matangazo & Mikoa -->
+        <div class="space-y-6">
+            
+            <!-- Tangazo Banner Premium -->
+            <div class="relative overflow-hidden rounded-3xl bg-sky-950 text-white shadow-xl aspect-[4/3] flex flex-col justify-end p-6 group">
+                <div class="absolute inset-0 z-0">
+                    <img src="{% static 'universitysite/images/ad_banner.png' %}" alt="Matangazo" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+                </div>
+                <div class="relative z-10">
+                    <span class="inline-flex items-center rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] font-bold text-yellow-300 ring-1 ring-yellow-500/30 mb-2">
+                        TANGAZO LA UDAHILI
+                    </span>
+                    <h4 class="text-lg font-bold">Nafasi za Masomo Zipo Wazi!</h4>
+                    <p class="text-xs text-slate-300 mt-1">
+                        Vyuo mbalimbali vinaendelea kupokea maombi kwa muhula mpya wa masomo. Wahudumu wetu wako tayari kukusaidia.
+                    </p>
+                    <a href="{% url 'universitysite:contact' %}" class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-sky-400 hover:text-sky-300 transition">
+                        Wasiliana Nasi <i class="fas fa-arrow-right text-[10px]"></i>
+                    </a>
                 </div>
             </div>
 
+            <!-- Sehemu ya Mikoa -->
+            <div class="card rounded-3xl p-6">
+                <h3 class="text-lg font-bold text-slate-800">Tafuta Vyuo kwa Mikoa</h3>
+                <p class="text-xs text-slate-500 mt-1">Chagua mkoa kuona vyuo vilivyopo huko.</p>
+                
+                <div class="mt-4 grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
+                    {% for reg in region %}
+                    <a href="{% url 'universitysite:vyuo' reg.id %}"
+                        class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-700 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700 transition">
+                        {{ reg.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            
         </div>
-        
-        <div class="mt-8 rounded-2rem border border-sky-100 bg-sky-50 p-6">
-            <h3 class="text-lg font-semibold text-sky-900">Tafuta kozi kwa Combination yako</h3>
-            <p class="mt-1 text-sm text-sky-700">Chagua mchepuo wako wa Kidato cha Sita uone kozi unazoweza kusoma.</p>
-            <form action="{% url 'universitysite:course_list' %}" method="get" class="mt-4 flex flex-col sm:flex-row gap-3">
-                <select name="combination" required class="flex-1 rounded-2xl border border-sky-200 bg-white px-4 py-3 text-slate-800 shadow-sm outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500">
-                    <option value="">Chagua Combination...</option>
-                    <option value="PCB">PCB (Physics, Chemistry, Biology)</option>
-                    <option value="PCM">PCM (Physics, Chemistry, Mathematics)</option>
-                    <option value="PMC">PMC (Physics, Mathematics, Computer)</option>
-                    <option value="CBG">CBG (Chemistry, Biology, Geography)</option>
-                    <option value="PGM">PGM (Physics, Geography, Mathematics)</option>
-                    <option value="EGM">EGM (Economics, Geography, Mathematics)</option>
-                    <option value="ECA">ECA (Economics, Commerce, Accountancy)</option>
-                    <option value="HGL">HGL (History, Geography, English)</option>
-                    <option value="HGK">HGK (History, Geography, Kiswahili)</option>
-                    <option value="HKL">HKL (History, Kiswahili, English)</option>
-                    <option value="CBA">CBA (Chemistry, Biology, Agriculture)</option>
-                    <option value="HGE">HGE (History, Geography, Economics)</option>
-                    <option value="CBN">CBN (Chemistry, Biology, Nutrition)</option>
-                </select>
-                <button type="submit" class="rounded-2xl bg-sky-600 px-6 py-3 font-semibold text-white shadow-sm hover:bg-sky-700">
-                    Tafuta Kozi
-                </button>
-            </form>
-        </div>
-    </section>
-    <section class="card rounded-3xl p-6">
-        <h2 class="text-xl font-semibold text-slate-900">Mikoa</h2>
-        <p class="mt-2 text-sm text-slate-600">Chagua mkoa kuona vyuo vilivyopo.</p>
-        <ul class="mt-4 space-y-2">
-            {% for region in region %}
-            <li>
-                <a href="{% url 'universitysite:vyuo' region.id %}"
-                    class="block rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-slate-800 hover:border-sky-400 hover:bg-sky-50">{{ region.name }}</a>
-            </li>
-            {% endfor %}
-        </ul>
-    </section>
-
-   
+    </div>
 </div>
-
 {% endblock %}

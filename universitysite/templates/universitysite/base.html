@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,6 +7,8 @@
     <meta name="description" content="{% block meta_description %}Gundua vyuo na kozi mbalimbali Tanzania. Pata taarifa kamili kuhusu ada, sifa za kujiunga na programu zote za vyuo kikuu na vyuo vya kati.{% endblock %}" />
     <meta name="keywords" content="Vyuo Tanzania, Kozi, Vyuo Vikuu, Vyuo vya Kati, Sifa za kujiunga, Ada za vyuo, Universities in Tanzania, Courses, TCU, NACTE" />
     <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="{% static 'universitysite/images/favicon.png' %}" />
+    <link rel="apple-touch-icon" href="{% static 'universitysite/images/favicon.png' %}" />
     <title>
       {% block title %}
         University Portal
