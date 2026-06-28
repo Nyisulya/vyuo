@@ -138,6 +138,17 @@ def contact(request):
 def privacy(request):
     return render(request, 'universitysite/privacy.html')
 
+def feedback(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        email = request.POST.get('email', '').strip()
+        message = request.POST.get('message', '').strip()
+        if message:
+            Feedback.objects.create(name=name if name else None, email=email if email else None, message=message)
+            return render(request, 'universitysite/feedback.html', {'success': True})
+    return render(request, 'universitysite/feedback.html')
+
+
 def download_excel(request):
     """
     Download combined_data.xlsx moja kwa moja kupitia browser.

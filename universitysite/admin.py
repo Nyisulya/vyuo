@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 from import_export import resources, fields
 from import_export.widgets import ForeignKeyWidget
-from .models import University, Course, Region, UniversityCourse
+from .models import University, Course, Region, UniversityCourse, Feedback
 
 # Register your models here.
 
@@ -62,4 +62,11 @@ class UniversityCourseAdmin(ImportExportModelAdmin):
     list_display = ['university', 'course', 'level', 'duration']
     list_filter = ['level', 'duration', 'is_active']
     autocomplete_fields = ['university', 'course']
+
+@admin.register(Feedback)
+class FeedbackAdmin(admin.ModelAdmin):
+    list_display = ['name', 'email', 'created_at']
+    search_fields = ['name', 'email', 'message']
+    list_filter = ['created_at']
+    readonly_fields = ['created_at']
 
