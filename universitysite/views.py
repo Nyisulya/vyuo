@@ -208,6 +208,7 @@ def upload_excel(request):
                 req_text = str(row.get('Requirements', '')).strip()
                 duration_val = str(row.get('Duration', '')).strip()
                 uni_type = str(row.get('Type (university/institute)', '')).strip()
+                fee_val = str(row.get('Fee', '')).strip()
                 
                 if uni_name == 'nan' or not uni_name or course_name == 'nan' or not course_name:
                     total_skipped += 1
@@ -265,19 +266,29 @@ def upload_excel(request):
                 
                 req_text = req_text if req_text != 'nan' else ""
                 
+                fee_clean = None
+                if fee_val and fee_val != 'nan':
+                    try:
+                        fee_clean = float(fee_val.replace(',', ''))
+                    except:
+                        pass
+                
                 uni_course, uc_created = UniversityCourse.objects.get_or_create(
                     university=university,
                     course=course,
                     level="Degree",
                     defaults={
                         'duration': duration_str,
-                        'requirements': req_text
+                        'requirements': req_text,
+                        'fee': fee_clean
                     }
                 )
                 
                 if not uc_created:
                     uni_course.duration = duration_str
                     uni_course.requirements = req_text
+                    if fee_clean is not None:
+                        uni_course.fee = fee_clean
                     uni_course.save()
                     
                 total_imported += 1
