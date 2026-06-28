@@ -16,6 +16,9 @@
                             <ul>
                                 <li><strong>Kozi/Vyuo vilivyoingizwa au ku-update-iwa:</strong> {{ imported_count }}</li>
                                 <li><strong>Mistari iliyoachwa (skipped):</strong> {{ skipped_count }}</li>
+                                {% if wiped %}
+                                <li><strong>Data za zamani zimefutwa kwanza</strong> ✅</li>
+                                {% endif %}
                             </ul>
                             <p>Unaweza kurudi kwenye <a href="{% url 'universitysite:home' %}">ukurasa wa mwanzo</a> au kupakia faili jingine.</p>
                         </div>
@@ -35,7 +38,17 @@
                             <input class="form-control" type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" required>
                             <div class="form-text">
                                 Faili hili linatakiwa kuwa na columns hizi: 
-                                <code>Jina la chuo, Mkoa, Umiliki (private/government), Courses, Requirements, Duration, Type (university/institute)</code>.
+                                <code>Jina la chuo, Mkoa, Umiliki (private/government), Courses, Requirements, Duration, Type (university/institute), Fee</code>.
+                                <br>Kama faili lako halina headers, mfumo utajua mwenyewe.
+                            </div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="wipe_first" name="wipe_first" value="1">
+                            <label class="form-check-label text-danger fw-bold" for="wipe_first">
+                                ⚠️ Futa data ZOTE za zamani kwanza kabla ya kuingiza mpya
+                            </label>
+                            <div class="form-text text-danger">
+                                Ukichagua hii, vyuo vyote, kozi zote, na mikoa yote ya zamani itafutwa kabisa kabla ya kuingiza data mpya kutoka kwenye faili lako.
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">

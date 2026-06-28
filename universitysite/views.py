@@ -196,6 +196,16 @@ def upload_excel(request):
         excel_file = request.FILES['excel_file']
         
         try:
+            # Angalia kama mtumiaji anataka kufuta data za zamani
+            wipe_first = request.POST.get('wipe_first') == '1'
+            
+            if wipe_first:
+                UniversityCourse.objects.all().delete()
+                Course.objects.all().delete()
+                University.objects.all().delete()
+                Region.objects.all().delete()
+                context['wiped'] = True
+            
             # Jaribu kusoma na headers kwanza
             df = pd.read_excel(excel_file, engine='calamine')
             
