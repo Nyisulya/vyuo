@@ -6,8 +6,20 @@ from .models import University, Course, Region, UniversityCourse
 
 # Register your models here.
 
+class RegionResource(resources.ModelResource):
+    class Meta:
+        model = Region
+        fields = ('id', 'name')
+
+    def skip_row(self, instance, original, row, import_validation_errors=None):
+        name = row.get('name')
+        if not name or str(name).strip() == '':
+            return True
+        return super().skip_row(instance, original, row, import_validation_errors=import_validation_errors)
+
 @admin.register(Region)
 class RegionAdmin(ImportExportModelAdmin):
+    resource_classes = [RegionResource]
     search_fields = ['name']
     list_display = ['name']
 
