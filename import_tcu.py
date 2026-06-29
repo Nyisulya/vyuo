@@ -8,6 +8,30 @@ django.setup()
 
 from universitysite.models import Region, University, Course, Requirement, UniversityCourse
 
+def determine_course_level(course_name):
+    name_lower = course_name.lower().strip()
+    words = name_lower.split()
+    if not words:
+        return 'Diploma'
+        
+    first_word = words[0]
+    
+    # Degree indicators
+    degree_prefixes = ('bachelor', 'bsc', 'b.sc', 'doctor', 'md', 'phd', 'master', 'postgraduate')
+    if first_word.startswith(degree_prefixes) or first_word in ('ba', 'b.a'):
+        return 'Degree'
+        
+    # Check if contains 'degree'
+    if 'degree' in name_lower:
+        return 'Degree'
+        
+    # Certificate indicators
+    if 'certificate' in name_lower or 'astastahiki' in name_lower:
+        return 'Certificate'
+        
+    return 'Diploma'
+
+
 def import_data():
     excel_file = "tcu/tcu_data_cleaned.xlsx"
     
@@ -71,12 +95,14 @@ def import_data():
             description=req_text
         )
         
+        course_level = determine_course_level(course.name)
+        
         # 4. UniversityCourse (Kiungo kikubwa)
         # Check if exists first because of unique_together = ['university','course','level']
         uni_course, uc_created = UniversityCourse.objects.get_or_create(
             university=university,
             course=course,
-            level="Degree",
+            level=course_level,
             defaults={
                 'duration': duration_str,
                 'requirements': requirement
