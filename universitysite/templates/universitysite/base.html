@@ -19,7 +19,7 @@
     {# ===== Open Graph (Facebook, WhatsApp, LinkedIn) ===== #}
     <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
     <meta property="og:site_name" content="VyuoFinder Tanzania" />
-    <meta property="og:title" content="{% block og_title %}{% block title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}{% endblock %}" />
+    <meta property="og:title" content="{% block og_title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}" />
     <meta property="og:description" content="{% block og_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Pata taarifa kamili kuhusu ada, sifa za kujiunga na programu zote — TCU na NACTE.{% endblock %}" />
     <meta property="og:url" content="https://vyuotanzania.nyisu.com{{ request.path }}" />
     <meta property="og:image" content="{% block og_image %}https://vyuotanzania.nyisu.com{% static 'universitysite/images/hero_banner.png' %}{% endblock %}" />
@@ -82,7 +82,7 @@
     </script>
     {% endblock schema_org %}
 
-    <title>{% block title_tag %}{% block title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}{% endblock %}</title>
+    <title>{% block title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2751QHPWST"></script>
     <script>
