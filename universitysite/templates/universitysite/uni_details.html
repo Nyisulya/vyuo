@@ -129,12 +129,6 @@
       <p class="text-xs text-slate-500 mt-1 font-medium">Diploma</p>
     </div>
     {% endif %}
-    {% if cert_count %}
-    <div class="card rounded-2xl p-5 text-center">
-      <p class="text-3xl font-extrabold text-amber-600">{{ cert_count }}</p>
-      <p class="text-xs text-slate-500 mt-1 font-medium">Cheti (Certificate)</p>
-    </div>
-    {% endif %}
     {% if min_fee %}
     <div class="card rounded-2xl p-5 text-center col-span-2 sm:col-span-1">
       <p class="text-xl font-extrabold text-rose-600">TZS {{ min_fee|floatformat:0 }}+</p>

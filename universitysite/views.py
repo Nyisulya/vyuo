@@ -129,16 +129,18 @@ def univ_detail(request, pk):
 
     # Hesabu statistics kutoka data iliyopo
     total_courses = courses_qs.count()
-    levels = list(courses_qs.values_list('level', flat=True).distinct())
+
+    # Tumia set() badala ya distinct() — reliable zaidi na PostgreSQL ORDER BY
+    all_levels = list(courses_qs.values_list('level', flat=True))
+    levels = sorted(set(all_levels))  # unique tu
     levels_str = ', '.join(levels) if levels else 'Mbalimbali'
 
     fees = [c.fee for c in courses_qs if c.fee]
     min_fee = int(min(fees)) if fees else None
     max_fee = int(max(fees)) if fees else None
 
-    cert_count  = courses_qs.filter(level='Certificate').count()
-    dip_count   = courses_qs.filter(level='Diploma').count()
-    deg_count   = courses_qs.filter(level='Degree').count()
+    deg_count = all_levels.count('Degree')
+    dip_count = all_levels.count('Diploma')
 
     course_paginator = Paginator(courses_qs, 15)
     course_page_number = request.GET.get('course_page')
@@ -151,9 +153,8 @@ def univ_detail(request, pk):
         'levels_str': levels_str,
         'min_fee': min_fee,
         'max_fee': max_fee,
-        'cert_count': cert_count,
-        'dip_count': dip_count,
         'deg_count': deg_count,
+        'dip_count': dip_count,
     }
     return render(request, 'universitysite/uni_details.html', content)
 
@@ -167,13 +168,14 @@ def cou_detail(request, pk):
 
     # Hesabu statistics
     total_unis   = universities_qs.count()
-    levels       = list(universities_qs.values_list('level', flat=True).distinct())
+    all_levels   = list(universities_qs.values_list('level', flat=True))
+    levels       = sorted(set(all_levels))  # unique tu, set() badala ya distinct()
     levels_str   = ', '.join(levels) if levels else ''
     fees         = [u.fee for u in universities_qs if u.fee]
     min_fee      = int(min(fees)) if fees else None
     max_fee      = int(max(fees)) if fees else None
-    durations    = list(universities_qs.values_list('duration', flat=True).distinct())
-    duration_str = ', '.join(sorted(set(durations))) if durations else ''
+    all_durations = list(universities_qs.values_list('duration', flat=True))
+    duration_str = ', '.join(sorted(set(all_durations))) if all_durations else ''
 
     # Pata requirements sample (ya kwanza isiyo tupu)
     sample_req = ''
