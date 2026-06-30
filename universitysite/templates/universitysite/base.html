@@ -1,19 +1,88 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sw">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="{% block meta_description %}Gundua vyuo na kozi mbalimbali Tanzania. Pata taarifa kamili kuhusu ada, sifa za kujiunga na programu zote za vyuo kikuu na vyuo vya kati.{% endblock %}" />
-    <meta name="keywords" content="Vyuo Tanzania, Kozi, Vyuo Vikuu, Vyuo vya Kati, Sifa za kujiunga, Ada za vyuo, Universities in Tanzania, Courses, TCU, NACTE" />
+
+    {# ===== SEO Core ===== #}
+    {% block meta_description_tag %}
+    <meta name="description" content="{% block meta_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Pata taarifa kamili kuhusu ada, sifa za kujiunga na programu zote — TCU na NACTE.{% endblock %}" />
+    {% endblock %}
+    <meta name="keywords" content="Vyuo Tanzania, Kozi Tanzania, Vyuo Vikuu, Vyuo vya Kati, Sifa za kujiunga, Ada za vyuo, Universities in Tanzania, Courses Tanzania, TCU, NACTE, VyuoFinder" />
     <meta name="robots" content="index, follow" />
+    <meta name="author" content="VyuoFinder" />
+
+    {# ===== Canonical URL — Inazuia duplicate content ===== #}
+    <link rel="canonical" href="{% block canonical_url %}https://vyuotanzania.nyisu.com{{ request.path }}{% endblock %}" />
+
+    {# ===== Open Graph (Facebook, WhatsApp, LinkedIn) ===== #}
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}" />
+    <meta property="og:site_name" content="VyuoFinder Tanzania" />
+    <meta property="og:title" content="{% block og_title %}{% block title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}{% endblock %}" />
+    <meta property="og:description" content="{% block og_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Pata taarifa kamili kuhusu ada, sifa za kujiunga na programu zote — TCU na NACTE.{% endblock %}" />
+    <meta property="og:url" content="https://vyuotanzania.nyisu.com{{ request.path }}" />
+    <meta property="og:image" content="{% block og_image %}https://vyuotanzania.nyisu.com{% static 'universitysite/images/hero_banner.png' %}{% endblock %}" />
+    <meta property="og:locale" content="sw_TZ" />
+
+    {# ===== Twitter / X Card ===== #}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{% block twitter_title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}" />
+    <meta name="twitter:description" content="{% block twitter_description %}Gundua vyuo na kozi mbalimbali Tanzania. Pata taarifa kamili kuhusu ada na sifa za kujiunga.{% endblock %}" />
+    <meta name="twitter:image" content="{% block twitter_image %}https://vyuotanzania.nyisu.com{% static 'universitysite/images/hero_banner.png' %}{% endblock %}" />
+
+    {# ===== Favicon ===== #}
     <link rel="icon" type="image/png" href="{% static 'universitysite/images/favicon.png' %}" />
     <link rel="apple-touch-icon" href="{% static 'universitysite/images/favicon.png' %}" />
-    <title>
-      {% block title %}
-        University Portal
-      {% endblock %}
-    </title>
+
+    {# ===== Schema.org JSON-LD Structured Data ===== #}
+    {% block schema_org %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://vyuotanzania.nyisu.com/#website",
+          "url": "https://vyuotanzania.nyisu.com/",
+          "name": "VyuoFinder Tanzania",
+          "description": "Portal ya vyuo vikuu na vyuo vya kati vyote Tanzania — TCU na NACTE",
+          "inLanguage": "sw",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://vyuotanzania.nyisu.com/home/universities/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://vyuotanzania.nyisu.com/#organization",
+          "name": "VyuoFinder Tanzania",
+          "url": "https://vyuotanzania.nyisu.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://vyuotanzania.nyisu.com{% static 'universitysite/images/favicon.png' %}"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+255787661560",
+            "contactType": "customer service",
+            "areaServed": "TZ",
+            "availableLanguage": "Swahili"
+          },
+          "sameAs": [
+            "https://vyuotanzania.nyisu.com/"
+          ]
+        }
+      ]
+    }
+    </script>
+    {% endblock schema_org %}
+
+    <title>{% block title_tag %}{% block title %}VyuoFinder - Tafuta Chuo au Kozi Tanzania{% endblock %}{% endblock %}</title>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2751QHPWST"></script>
     <script>

@@ -1,30 +1,211 @@
 {% extends 'universitysite/base.html' %}
 
-{% block title %}{{ course.name }} - Kozi{% endblock %}
+{% block title %}{{ course.name }} - Kozi Tanzania, Sifa na Ada | VyuoFinder{% endblock %}
+
+{% block meta_description %}Kozi ya {{ course.name }} inatangazwa na vyuo {{ total_unis }} nchini Tanzania.{% if levels_str %} Inapatikana katika ngazi ya {{ levels_str }}.{% endif %}{% if min_fee %} Ada inaanzia TZS {{ min_fee|floatformat:0 }}.{% endif %}{% if sample_req %} Sifa: {{ sample_req|truncatechars:120 }}{% endif %}{% endblock %}
+
+{% block og_title %}{{ course.name }} - Vyuo {{ total_unis }}, Sifa na Ada | VyuoFinder{% endblock %}
+{% block og_description %}Kozi ya {{ course.name }} inapatikana katika vyuo {{ total_unis }} Tanzania.{% if levels_str %} Ngazi: {{ levels_str }}.{% endif %}{% if min_fee %} Ada kuanzia TZS {{ min_fee|floatformat:0 }}.{% endif %}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "{{ course.name }}",
+  "description": "Kozi ya {{ course.name }} inatangazwa na vyuo {{ total_unis }} nchini Tanzania.{% if levels_str %} Inapatikana katika ngazi ya {{ levels_str }}.{% endif %}{% if min_fee %} Ada inaanzia TZS {{ min_fee|floatformat:0 }} kwa mwaka.{% endif %}",
+  "url": "https://vyuotanzania.nyisu.com{{ request.path }}",
+  "inLanguage": "sw",
+  "provider": {
+    "@type": "Organization",
+    "name": "VyuoFinder Tanzania",
+    "url": "https://vyuotanzania.nyisu.com"
+  },
+  "isPartOf": {"@id": "https://vyuotanzania.nyisu.com/#website"},
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Nyumbani", "item": "https://vyuotanzania.nyisu.com/"},
+      {"@type": "ListItem", "position": 2, "name": "Kozi Zote", "item": "https://vyuotanzania.nyisu.com/home/courses/"},
+      {"@type": "ListItem", "position": 3, "name": "{{ course.name }}", "item": "https://vyuotanzania.nyisu.com{{ request.path }}"}
+    ]
+  }
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <div class="space-y-6">
-    <section class="card rounded-3xl p-6">
-        <div class="space-y-3">
-            <p class="text-sm uppercase tracking-[0.3em] text-sky-600">Kozi</p>
-            <h1 class="text-3xl font-semibold text-slate-900">{{ course.name }}</h1>
-            <p class="text-slate-600">Jumla ya vyuo vinavyotoa kozi hii: <span class="font-semibold text-slate-900">{{ university.count }}</span></p>
+
+  {# ===== Breadcrumbs ===== #}
+  <nav aria-label="breadcrumb" class="text-sm text-slate-500 flex items-center gap-1.5 flex-wrap">
+    <a href="{% url 'universitysite:home' %}" class="hover:text-sky-600 transition-colors">Nyumbani</a>
+    <span>/</span>
+    <a href="{% url 'universitysite:course_list' %}" class="hover:text-sky-600 transition-colors">Kozi Zote</a>
+    <span>/</span>
+    <span class="text-slate-800 font-medium">{{ course.name }}</span>
+  </nav>
+
+  {# ===== Header ===== #}
+  <section class="card rounded-3xl p-6 md:p-8">
+    <p class="text-xs uppercase tracking-[0.3em] text-sky-600 font-semibold mb-2">Kozi ya Elimu ya Juu</p>
+    <h1 class="text-3xl font-bold text-slate-900 leading-tight">{{ course.name }}</h1>
+
+    <p class="mt-4 text-slate-600 text-base leading-relaxed max-w-3xl">
+      Kozi ya <strong>{{ course.name }}</strong> inatangazwa na vyuo
+      <strong>{{ total_unis }}</strong> nchini Tanzania.
+      {% if levels_str %}
+        Inapatikana katika ngazi ya <strong>{{ levels_str }}</strong>.
+      {% endif %}
+      {% if duration_str %}
+        Muda wa masomo ni miaka <strong>{{ duration_str }}</strong>.
+      {% endif %}
+      {% if min_fee and max_fee %}
+        Ada inaanzia <strong>TZS {{ min_fee|floatformat:0 }}</strong>
+        hadi <strong>TZS {{ max_fee|floatformat:0 }}</strong> kwa mwaka,
+        kutegemea chuo unachochagua.
+      {% elif min_fee %}
+        Ada inaanzia <strong>TZS {{ min_fee|floatformat:0 }}</strong> kwa mwaka.
+      {% endif %}
+    </p>
+
+    {% if sample_req %}
+    <div class="mt-4 rounded-2xl bg-sky-50 border border-sky-100 p-4">
+      <p class="text-xs font-bold uppercase tracking-wider text-sky-700 mb-1">Sifa za Kawaida za Kujiunga</p>
+      <p class="text-sm text-slate-700 leading-relaxed">{{ sample_req }}</p>
+    </div>
+    {% endif %}
+  </section>
+
+  {# ===== Statistics ===== #}
+  <section aria-label="Takwimu za kozi" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="card rounded-2xl p-5 text-center">
+      <p class="text-3xl font-extrabold text-sky-600">{{ total_unis }}</p>
+      <p class="text-xs text-slate-500 mt-1 font-medium">Vyuo Vinavyotoa</p>
+    </div>
+    {% if levels_str %}
+    <div class="card rounded-2xl p-5 text-center">
+      <p class="text-xl font-extrabold text-indigo-600">{{ levels_str }}</p>
+      <p class="text-xs text-slate-500 mt-1 font-medium">Ngazi Zinazopatikana</p>
+    </div>
+    {% endif %}
+    {% if duration_str %}
+    <div class="card rounded-2xl p-5 text-center">
+      <p class="text-3xl font-extrabold text-emerald-600">{{ duration_str }}</p>
+      <p class="text-xs text-slate-500 mt-1 font-medium">Miaka ya Masomo</p>
+    </div>
+    {% endif %}
+    {% if min_fee %}
+    <div class="card rounded-2xl p-5 text-center">
+      <p class="text-xl font-extrabold text-rose-600">TZS {{ min_fee|floatformat:0 }}+</p>
+      <p class="text-xs text-slate-500 mt-1 font-medium">Ada ya Chini (kwa mwaka)</p>
+    </div>
+    {% endif %}
+  </section>
+
+  {# ===== Vyuo Vinavyotoa Kozi Hii ===== #}
+  <section class="card rounded-3xl p-6 md:p-8">
+    <h2 class="text-2xl font-bold text-slate-900">
+      Vyuo Vinavyotoa Kozi ya {{ course.name }}
+    </h2>
+    <p class="mt-1 text-sm text-slate-500">
+      Linganisha vyuo {{ total_unis }} &mdash; angalia ada, ngazi, muda na sifa za kujiunga.
+    </p>
+
+    <div class="mt-6 space-y-4">
+      {% for univesit in university %}
+      <article class="rounded-2xl border border-slate-200 bg-slate-50 hover:border-sky-300 hover:bg-sky-50/50 transition-all p-5">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="flex-1 min-w-0">
+            <a href="{% url 'universitysite:universi' univesit.university.id %}"
+               class="text-base font-bold text-slate-900 hover:text-sky-700 transition-colors">
+              {{ univesit.university.name }}
+            </a>
+
+            <div class="flex flex-wrap gap-2 mt-2 text-xs">
+              {# Mkoa #}
+              <span class="inline-flex items-center gap-1 rounded-full bg-slate-200 text-slate-700 px-3 py-0.5 font-medium">
+                <i class="fas fa-map-marker-alt text-[9px]"></i>
+                {{ univesit.university.region.name }}
+              </span>
+              {# Level #}
+              {% if univesit.level %}
+              <span class="inline-flex items-center rounded-full px-3 py-0.5 font-semibold
+                {% if univesit.level == 'Degree' %}bg-indigo-100 text-indigo-700
+                {% elif univesit.level == 'Diploma' %}bg-emerald-100 text-emerald-700
+                {% else %}bg-amber-100 text-amber-700{% endif %}">
+                {{ univesit.level }}
+              </span>
+              {% endif %}
+              {# Duration #}
+              {% if univesit.duration %}
+              <span class="inline-flex items-center gap-1 rounded-full bg-slate-200 text-slate-700 px-3 py-0.5 font-medium">
+                <i class="fas fa-clock text-[9px]"></i> Miaka {{ univesit.duration }}
+              </span>
+              {% endif %}
+              {# Umiliki #}
+              {% if univesit.university.umiliki %}
+              <span class="inline-flex items-center rounded-full bg-slate-200 text-slate-600 px-3 py-0.5">
+                {{ univesit.university.umiliki }}
+              </span>
+              {% endif %}
+            </div>
+
+            {# Requirements #}
+            {% if univesit.requirements %}
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed">
+              <span class="font-semibold text-slate-700">Sifa:</span>
+              {{ univesit.requirements|truncatechars:250 }}
+            </p>
+            {% endif %}
+          </div>
+
+          {# Fee + Apply #}
+          <div class="text-right shrink-0 space-y-2">
+            {% if univesit.fee %}
+            <div>
+              <p class="text-xs text-slate-400 font-medium">Ada/mwaka</p>
+              <p class="text-lg font-extrabold text-rose-600">TZS {{ univesit.fee|floatformat:0 }}</p>
+            </div>
+            {% endif %}
+            {% if univesit.application_link %}
+            <a href="{{ univesit.application_link }}" target="_blank" rel="noopener nofollow"
+               class="inline-flex items-center gap-1 text-xs font-semibold text-white bg-sky-600 hover:bg-sky-700 transition rounded-xl px-3 py-1.5">
+              <i class="fas fa-external-link-alt text-[9px]"></i> Omba
+            </a>
+            {% endif %}
+            <a href="{% url 'universitysite:universi' univesit.university.id %}"
+               class="inline-flex items-center gap-1 text-xs font-semibold text-sky-600 hover:text-sky-700 transition block">
+              Taarifa Zaidi &rarr;
+            </a>
+          </div>
         </div>
-    </section>
+      </article>
+      {% empty %}
+      <p class="text-slate-500 text-sm">Hakuna chuo kinachoonekana bado kwa kozi hii.</p>
+      {% endfor %}
+    </div>
+  </section>
 
-    {% with first_uni=university.first %}
+  {# ===== CTA ===== #}
+  <section class="card rounded-3xl p-6 bg-sky-50 border border-sky-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div>
+      <h3 class="font-bold text-slate-800">Tafuta Kozi Nyingine</h3>
+      <p class="text-sm text-slate-500 mt-1">Gundua kozi zaidi zinazopatikana Tanzania.</p>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+      <a href="{% url 'universitysite:course_list' %}"
+         class="rounded-2xl bg-sky-600 text-white px-5 py-2.5 text-sm font-semibold hover:bg-sky-700 transition shadow-sm">
+        Kozi Zote Tanzania
+      </a>
+      <a href="{% url 'universitysite:university_list' %}"
+         class="rounded-2xl bg-white text-slate-700 border border-slate-200 px-5 py-2.5 text-sm font-semibold hover:bg-slate-50 transition">
+        Vyuo Vyote
+      </a>
+    </div>
+  </section>
 
-    {% endwith %}
-
-    <section class="card rounded-3xl p-6">
-        <h2 class="text-2xl font-semibold text-slate-900">Vyuo vinavyotoa kozi hii</h2>
-        <p class="mt-2 text-sm text-slate-600">Bonyeza jina la chuo ili kuona maelezo ya chuo.</p>
-        <div class="mt-5 space-y-3">
-            {% for univesit in university %}
-            <a href="{% url 'universitysite:course_detail' univesit.id %}"
-                class="block rounded-3xl border border-slate-200 bg-slate-50 px-5 py-4 text-slate-900 shadow-sm hover:border-sky-400 hover:bg-sky-50">{{ univesit.university.name }}</a>
-            {% endfor %}
-        </div>
-    </section>
 </div>
 {% endblock %}

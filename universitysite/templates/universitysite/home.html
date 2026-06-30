@@ -1,7 +1,47 @@
 {% extends 'universitysite/base.html' %}
 {% load static %}
 
-{% block title %}Vyuo vya kati na vyuo vikuu vyote Tanzania - VyuoFinder{% endblock %}
+{% block title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
+
+{% block meta_description %}Pata taarifa za vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi zinazotolewa na vyuo vilivyosajiliwa na TCU na NACTE. Tafuta kwa combination yako ya A-Level.{% endblock %}
+
+{% block og_title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
+{% block og_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi — TCU na NACTE. Tafuta kwa combination yako ya A-Level.{% endblock %}
+{% block twitter_title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
+{% block twitter_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa, ada, na kozi — TCU na NACTE.{% endblock %}
+
+{% block schema_org %}
+{{ block.super }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://vyuotanzania.nyisu.com/#webpage",
+  "url": "https://vyuotanzania.nyisu.com/",
+  "name": "Vyuo vya Kati na Vikuu Vyote Tanzania - VyuoFinder",
+  "description": "Pata taarifa za vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi zinazotolewa na vyuo vilivyosajiliwa na TCU na NACTE.",
+  "inLanguage": "sw",
+  "isPartOf": {"@id": "https://vyuotanzania.nyisu.com/#website"},
+  "about": {
+    "@type": "EducationalOrganization",
+    "name": "Vyuo Tanzania",
+    "description": "Portal ya vyuo vikuu na vyuo vya kati vyote Tanzania",
+    "areaServed": "Tanzania"
+  },
+  "breadcrumb": {
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Nyumbani",
+        "item": "https://vyuotanzania.nyisu.com/"
+      }
+    ]
+  }
+}
+</script>
+{% endblock schema_org %}
 
 {% block content %}
 <div class="space-y-8">

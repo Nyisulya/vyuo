@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
-from universitysite.sitemaps import UniversitySitemap, CourseSitemap, StaticViewSitemap
+from universitysite.sitemaps import UniversitySitemap, CourseSitemap, StaticViewSitemap, RegionSitemap
 
 sitemaps = {
     'universities': UniversitySitemap,
     'courses': CourseSitemap,
+    'regions': RegionSitemap,
     'static': StaticViewSitemap,
 }
 

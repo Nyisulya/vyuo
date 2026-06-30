@@ -125,14 +125,35 @@ def vyuo_region(request, pk):
 
 def univ_detail(request, pk):
     university = get_object_or_404(University, pk=pk)
-    courses = UniversityCourse.objects.filter (university = university) 
-    
-    course_paginator = Paginator(courses, 10)
+    courses_qs = UniversityCourse.objects.filter(university=university).select_related('course')
+
+    # Hesabu statistics kutoka data iliyopo
+    total_courses = courses_qs.count()
+    levels = list(courses_qs.values_list('level', flat=True).distinct())
+    levels_str = ', '.join(levels) if levels else 'Mbalimbali'
+
+    fees = [c.fee for c in courses_qs if c.fee]
+    min_fee = int(min(fees)) if fees else None
+    max_fee = int(max(fees)) if fees else None
+
+    cert_count  = courses_qs.filter(level='Certificate').count()
+    dip_count   = courses_qs.filter(level='Diploma').count()
+    deg_count   = courses_qs.filter(level='Degree').count()
+
+    course_paginator = Paginator(courses_qs, 15)
     course_page_number = request.GET.get('course_page')
     courses = course_paginator.get_page(course_page_number)
+
     content = {
         'university': university,
-        'course': courses
+        'course': courses,
+        'total_courses': total_courses,
+        'levels_str': levels_str,
+        'min_fee': min_fee,
+        'max_fee': max_fee,
+        'cert_count': cert_count,
+        'dip_count': dip_count,
+        'deg_count': deg_count,
     }
     return render(request, 'universitysite/uni_details.html', content)
 
@@ -142,8 +163,35 @@ def course_detail(request, pk):
 
 def cou_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    universities = UniversityCourse.objects.filter(course = course)
-    return render(request, 'universitysite/cou_detail.html', {'university': universities, 'course': course})
+    universities_qs = UniversityCourse.objects.filter(course=course).select_related('university', 'university__region')
+
+    # Hesabu statistics
+    total_unis   = universities_qs.count()
+    levels       = list(universities_qs.values_list('level', flat=True).distinct())
+    levels_str   = ', '.join(levels) if levels else ''
+    fees         = [u.fee for u in universities_qs if u.fee]
+    min_fee      = int(min(fees)) if fees else None
+    max_fee      = int(max(fees)) if fees else None
+    durations    = list(universities_qs.values_list('duration', flat=True).distinct())
+    duration_str = ', '.join(sorted(set(durations))) if durations else ''
+
+    # Pata requirements sample (ya kwanza isiyo tupu)
+    sample_req = ''
+    for u in universities_qs:
+        if u.requirements and len(u.requirements) > 20:
+            sample_req = u.requirements[:300]
+            break
+
+    return render(request, 'universitysite/cou_detail.html', {
+        'course': course,
+        'university': universities_qs,
+        'total_unis': total_unis,
+        'levels_str': levels_str,
+        'min_fee': min_fee,
+        'max_fee': max_fee,
+        'duration_str': duration_str,
+        'sample_req': sample_req,
+    })
 
 
     
