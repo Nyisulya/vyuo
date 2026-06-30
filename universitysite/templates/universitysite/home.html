@@ -2,9 +2,7 @@
 {% load static %}
 
 {% block title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
-
 {% block meta_description %}Pata taarifa za vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi zinazotolewa na vyuo vilivyosajiliwa na TCU na NACTE. Tafuta kwa combination yako ya A-Level.{% endblock %}
-
 {% block og_title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
 {% block og_description %}Gundua vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi — TCU na NACTE. Tafuta kwa combination yako ya A-Level.{% endblock %}
 {% block twitter_title %}Vyuo vya Kati na Vikuu Vyote Tanzania | VyuoFinder{% endblock %}
@@ -22,154 +20,311 @@
   "description": "Pata taarifa za vyuo vikuu na vyuo vya kati vyote Tanzania. Angalia sifa za kujiunga, ada, na kozi zinazotolewa na vyuo vilivyosajiliwa na TCU na NACTE.",
   "inLanguage": "sw",
   "isPartOf": {"@id": "https://vyuotanzania.nyisu.com/#website"},
-  "about": {
-    "@type": "EducationalOrganization",
-    "name": "Vyuo Tanzania",
-    "description": "Portal ya vyuo vikuu na vyuo vya kati vyote Tanzania",
-    "areaServed": "Tanzania"
-  },
-  "breadcrumb": {
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Nyumbani",
-        "item": "https://vyuotanzania.nyisu.com/"
-      }
-    ]
-  }
+  "about": {"@type": "EducationalOrganization","name": "Vyuo Tanzania","description": "Portal ya vyuo vikuu na vyuo vya kati vyote Tanzania","areaServed": "Tanzania"},
+  "breadcrumb": {"@type": "BreadcrumbList","itemListElement": [{"@type": "ListItem","position": 1,"name": "Nyumbani","item": "https://vyuotanzania.nyisu.com/"}]}
 }
 </script>
 {% endblock schema_org %}
 
 {% block content %}
-<div class="space-y-8">
-    
-    <!-- Hero Section na Picha ya Background -->
-    <div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl">
-        <!-- Picha ya background yenye opacity ya chini -->
+<div class="space-y-10">
+
+  <!-- ========== HERO SECTION ========== -->
+  <section class="relative overflow-hidden rounded-3xl bg-slate-950 text-white shadow-2xl min-h-[480px] flex items-center">
+    <!-- Background image -->
+    <div class="absolute inset-0 z-0">
+      <img src="{% static 'universitysite/images/hero_banner.png' %}"
+           alt="Wanafunzi Tanzania vyuoni"
+           class="h-full w-full object-cover object-center"
+           style="opacity:0.45;">
+      <!-- Gradient overlay -->
+      <div class="absolute inset-0" style="background: linear-gradient(120deg, rgba(2,6,23,0.97) 0%, rgba(2,6,23,0.82) 55%, rgba(2,6,23,0.3) 100%);"></div>
+      <!-- Animated shimmer particles -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.12) 0%,transparent 70%);top:-60px;left:-60px;animation:pulse 4s ease-in-out infinite;"></div>
+        <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.1) 0%,transparent 70%);bottom:40px;right:120px;animation:pulse 5s ease-in-out infinite 1s;"></div>
+      </div>
+    </div>
+
+    <div class="relative z-10 w-full px-6 py-16 sm:py-20 lg:px-10">
+      <div class="max-w-3xl">
+        <!-- Badge -->
+        <span class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-bold mb-5"
+              style="background:rgba(56,189,248,0.15);border:1px solid rgba(56,189,248,0.3);color:#7dd3fc;">
+          <span class="inline-block h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse"></span>
+          🎓 Portal Rasmi ya Vyuo Tanzania
+        </span>
+
+        <h1 class="text-4xl font-extrabold tracking-tight leading-tight sm:text-5xl lg:text-6xl">
+          Tafuta <span style="background:linear-gradient(90deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Chuo au Kozi</span><br>
+          unayotaka Tanzania
+        </h1>
+        <p class="mt-5 text-lg text-slate-300 max-w-2xl leading-relaxed">
+          Gundua vyuo vikuu na vyuo vya kati vyote Tanzania — sifa za kujiunga,
+          ada, na kozi zote katika <strong class="text-white">sehemu moja</strong>.
+          Inakusaidia kufanya uamuzi sahihi wa maisha yako.
+        </p>
+
+        <!-- CTA Buttons -->
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="{% url 'universitysite:university_list' %}"
+             class="inline-flex items-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-bold text-white shadow-xl transition-all hover:-translate-y-0.5"
+             style="background:linear-gradient(135deg,#0284c7,#6366f1);box-shadow:0 8px 30px rgba(56,189,248,0.3);">
+            <i class="fas fa-university text-sm"></i>
+            Vyuo Vyote ({{ university.paginator.count }})
+          </a>
+          <a href="{% url 'universitysite:course_list' %}"
+             class="inline-flex items-center gap-2 rounded-2xl px-7 py-3.5 text-sm font-bold text-white transition-all hover:-translate-y-0.5"
+             style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);backdrop-filter:blur(10px);">
+            <i class="fas fa-book-open text-sm"></i>
+            Kozi Zote ({{ course.paginator.count }})
+          </a>
+        </div>
+
+        <!-- Quick trust stats -->
+        <div class="mt-10 flex flex-wrap gap-6 text-sm text-slate-400">
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-sky-400"></i>
+            <span>Vyuo vya TCU na NACTE</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-sky-400"></i>
+            <span>Taarifa za Ada na Sifa</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i class="fas fa-check-circle text-sky-400"></i>
+            <span>Mikoa yote Tanzania</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== STATS SECTION ========== -->
+  <section class="relative overflow-hidden rounded-3xl text-white shadow-xl"
+           style="background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);">
+    <div class="absolute inset-0 opacity-20">
+      <img src="{% static 'universitysite/images/stats_bg.png' %}"
+           alt="" class="h-full w-full object-cover" aria-hidden="true">
+    </div>
+    <div class="relative z-10 grid grid-cols-2 gap-0 sm:grid-cols-4 divide-x divide-white/10">
+      <div class="px-8 py-8 text-center">
+        <p class="text-4xl font-black" style="background:linear-gradient(135deg,#38bdf8,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          {{ university.paginator.count }}+
+        </p>
+        <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Vyuo Vyote</p>
+      </div>
+      <div class="px-8 py-8 text-center">
+        <p class="text-4xl font-black" style="background:linear-gradient(135deg,#34d399,#059669);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          {{ course.paginator.count }}+
+        </p>
+        <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Kozi Zote</p>
+      </div>
+      <div class="px-8 py-8 text-center">
+        <p class="text-4xl font-black" style="background:linear-gradient(135deg,#fb923c,#f59e0b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          {{ region|length }}
+        </p>
+        <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">Mikoa</p>
+      </div>
+      <div class="px-8 py-8 text-center">
+        <p class="text-4xl font-black" style="background:linear-gradient(135deg,#f472b6,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">
+          2
+        </p>
+        <p class="text-xs font-semibold text-slate-400 mt-1 uppercase tracking-wider">TCU & NACTE</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== MAIN CONTENT GRID ========== -->
+  <div class="grid gap-8 lg:grid-cols-[3fr_2fr]">
+
+    <!-- LEFT: Search + Features -->
+    <div class="space-y-6">
+
+      <!-- Combination Search Card -->
+      <div class="relative overflow-hidden rounded-3xl shadow-xl"
+           style="background:linear-gradient(135deg,#eff6ff 0%,#f0fdf4 100%);border:1px solid #bfdbfe;">
+        <!-- decorative blob -->
+        <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+
+        <div class="relative z-10 p-6">
+          <div class="flex items-center gap-4">
+            <div class="flex h-14 w-14 items-center justify-center rounded-2xl shadow-lg text-white text-xl"
+                 style="background:linear-gradient(135deg,#0284c7,#6366f1);">
+              🔍
+            </div>
+            <div>
+              <h2 class="text-xl font-extrabold text-slate-800">Tafuta kwa Combination yako</h2>
+              <p class="text-sm text-slate-500">A-Level → Kozi unazostahili kusoma</p>
+            </div>
+          </div>
+
+          <form action="{% url 'universitysite:course_list' %}" method="get" class="mt-5 flex flex-col sm:flex-row gap-3">
+            <select name="combination" required
+                    class="flex-1 rounded-2xl border-2 border-blue-100 bg-white px-4 py-3.5 text-slate-800 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 transition font-medium">
+              <option value="">Chagua Combination yako...</option>
+              <option value="PCB">PCB — Physics, Chemistry, Biology</option>
+              <option value="PCM">PCM — Physics, Chemistry, Mathematics</option>
+              <option value="PMC">PMC — Physics, Mathematics, Computer</option>
+              <option value="CBG">CBG — Chemistry, Biology, Geography</option>
+              <option value="PGM">PGM — Physics, Geography, Mathematics</option>
+              <option value="EGM">EGM — Economics, Geography, Mathematics</option>
+              <option value="ECA">ECA — Economics, Commerce, Accountancy</option>
+              <option value="HGL">HGL — History, Geography, English</option>
+              <option value="HGK">HGK — History, Geography, Kiswahili</option>
+              <option value="HKL">HKL — History, Kiswahili, English</option>
+              <option value="CBA">CBA — Chemistry, Biology, Agriculture</option>
+              <option value="HGE">HGE — History, Geography, Economics</option>
+              <option value="CBN">CBN — Chemistry, Biology, Nutrition</option>
+            </select>
+            <button type="submit"
+                    class="rounded-2xl px-7 py-3.5 font-bold text-white shadow-lg transition hover:-translate-y-0.5"
+                    style="background:linear-gradient(135deg,#0284c7,#6366f1);box-shadow:0 6px 20px rgba(56,189,248,0.3);">
+              Tafuta
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Feature Cards 2x2 -->
+      <div class="grid gap-4 sm:grid-cols-2">
+        <!-- Card 1 -->
+        <div class="group relative overflow-hidden rounded-3xl p-6 shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
+             style="background:linear-gradient(135deg,#0f172a,#1e293b);color:white;border:1px solid rgba(255,255,255,0.08);">
+          <div style="position:absolute;top:0;right:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+          <div class="text-3xl mb-3">🏫</div>
+          <h3 class="text-base font-bold text-white">Vyuo vya Kati &amp; Vikuu</h3>
+          <p class="text-sm text-slate-400 mt-2 leading-relaxed">Vyuo vilivyosajiliwa na TCU (vikuu) na NACTE (vya kati) vyote hapa.</p>
+          <a href="{% url 'universitysite:university_list' %}" class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-sky-400 hover:text-sky-300 transition">
+            Angalia Vyuo <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+        <!-- Card 2 -->
+        <div class="group relative overflow-hidden rounded-3xl p-6 shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
+             style="background:linear-gradient(135deg,#064e3b,#065f46);color:white;border:1px solid rgba(255,255,255,0.08);">
+          <div style="position:absolute;top:0;right:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(52,211,153,0.2) 0%,transparent 70%);pointer-events:none;"></div>
+          <div class="text-3xl mb-3">💰</div>
+          <h3 class="text-base font-bold text-white">Ada &amp; Sifa za Kujiunga</h3>
+          <p class="text-sm text-emerald-100 mt-2 leading-relaxed">Linganisha ada na sifa ili kufanya uamuzi wa uhakika wa masomo yako.</p>
+          <a href="{% url 'universitysite:course_list' %}" class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-emerald-300 hover:text-emerald-200 transition">
+            Angalia Kozi <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+        <!-- Card 3 -->
+        <div class="group relative overflow-hidden rounded-3xl p-6 shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
+             style="background:linear-gradient(135deg,#4c1d95,#5b21b6);color:white;border:1px solid rgba(255,255,255,0.08);">
+          <div style="position:absolute;top:0;right:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,0.25) 0%,transparent 70%);pointer-events:none;"></div>
+          <div class="text-3xl mb-3">📍</div>
+          <h3 class="text-base font-bold text-white">Tafuta kwa Mkoa</h3>
+          <p class="text-sm text-purple-200 mt-2 leading-relaxed">Tafuta vyuo vilivyoko karibu nawe katika mkoa wako.</p>
+          <a href="{% url 'universitysite:region' %}" class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-purple-300 hover:text-purple-200 transition">
+            Angalia Mikoa <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+        <!-- Card 4 -->
+        <div class="group relative overflow-hidden rounded-3xl p-6 shadow-md transition-all hover:shadow-xl hover:-translate-y-1"
+             style="background:linear-gradient(135deg,#7c2d12,#9a3412);color:white;border:1px solid rgba(255,255,255,0.08);">
+          <div style="position:absolute;top:0;right:0;width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(251,146,60,0.25) 0%,transparent 70%);pointer-events:none;"></div>
+          <div class="text-3xl mb-3">🎓</div>
+          <h3 class="text-base font-bold text-white">Shahada &amp; Diploma</h3>
+          <p class="text-sm text-orange-200 mt-2 leading-relaxed">Pata kozi za Shahada (Degree) na Diploma kulingana na sifa zako.</p>
+          <a href="{% url 'universitysite:course_list' %}" class="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-orange-300 hover:text-orange-200 transition">
+            Tafuta Kozi <i class="fas fa-arrow-right text-[10px]"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Ad Banner + Regions -->
+    <div class="space-y-6">
+
+      <!-- Ad Banner with Image -->
+      <div class="relative overflow-hidden rounded-3xl shadow-2xl text-white group" style="min-height:280px;">
         <div class="absolute inset-0 z-0">
-            <img src="{% static 'universitysite/images/hero_banner.png' %}" alt="Vyuo Tanzania" class="h-full w-full object-cover object-center opacity-30">
-            <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent"></div>
+          <img src="{% static 'universitysite/images/ad_banner.png' %}"
+               alt="Nafasi za Masomo Tanzania"
+               class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+          <div class="absolute inset-0" style="background:linear-gradient(to top,rgba(2,6,23,0.97) 0%,rgba(2,6,23,0.6) 50%,rgba(2,6,23,0.1) 100%);"></div>
         </div>
+        <div class="relative z-10 flex flex-col justify-end h-full p-6" style="min-height:280px;">
+          <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold mb-3 w-fit"
+                style="background:rgba(234,179,8,0.2);border:1px solid rgba(234,179,8,0.4);color:#fde047;">
+            <span class="h-1.5 w-1.5 rounded-full bg-yellow-400 animate-pulse"></span>
+            UDAHILI UMEFUNGULIWA
+          </span>
+          <h3 class="text-xl font-extrabold leading-tight">Nafasi za Masomo<br>Zipo Wazi Sasa! 🎉</h3>
+          <p class="text-sm text-slate-300 mt-2 leading-relaxed">
+            Vyuo vinaendelea kupokea maombi. Usiache nafasi ipite — jisajili leo.
+          </p>
+          <a href="{% url 'universitysite:contact' %}"
+             class="mt-4 inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm font-bold text-white w-fit transition hover:-translate-y-0.5"
+             style="background:linear-gradient(135deg,#0284c7,#6366f1);box-shadow:0 4px 15px rgba(56,189,248,0.4);">
+            Wasiliana Nasi <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
 
-        <div class="relative z-10 mx-auto max-w-4xl px-6 py-16 sm:py-20 lg:px-8">
-            <span class="inline-flex items-center rounded-full bg-sky-500/20 px-3 py-1 text-xs font-semibold text-sky-300 ring-1 ring-sky-500/30">
-                🎓 Mfumo Mpya na Rahisi
-            </span>
-            <h1 class="mt-6 text-4xl font-extrabold tracking-tight sm:text-5xl">
-                Tafuta Chuo au Kozi unayotaka kwa urahisi zaidi
-            </h1>
-            <p class="mt-4 max-w-2xl text-lg text-slate-300">
-                Gundua vyuo vikuu na vyuo vya kati vyote Tanzania, sifa zao za kujiunga, ada na muda wa masomo katika sehemu moja.
-            </p>
-            <div class="mt-8 flex flex-wrap gap-4">
-                <a href="{% url 'universitysite:university_list' %}"
-                    class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg hover:bg-sky-500 hover:shadow-sky-500/30 transition-all hover:-translate-y-0.5">
-                    Angalia Vyuo Vyote ({{ university.paginator.count }})
-                </a>
-                <a href="{% url 'universitysite:course_list' %}"
-                    class="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-md hover:bg-white/20 transition-all hover:-translate-y-0.5">
-                    Tafuta Kozi Zote ({{ course.paginator.count }})
-                </a>
-            </div>
+      <!-- Mikoa Card -->
+      <div class="card rounded-3xl overflow-hidden shadow-lg">
+        <!-- Header with gradient -->
+        <div class="px-6 py-4" style="background:linear-gradient(135deg,#0f172a,#1e293b);">
+          <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+            <i class="fas fa-map-marked-alt text-sky-400"></i>
+            Tafuta Vyuo kwa Mkoa
+          </h3>
+          <p class="text-xs text-slate-400 mt-0.5">Chagua mkoa wako — uone vyuo vilivyopo huko</p>
         </div>
+        <div class="p-4">
+          <div class="grid grid-cols-2 gap-2 max-h-64 overflow-y-auto pr-1">
+            {% for reg in region %}
+            <a href="{% url 'universitysite:vyuo' reg.id %}"
+               class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-700 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700 transition-all hover:-translate-y-0.5">
+              {{ reg.name }}
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-    <!-- Main Grid: Kushoto ni Tafuta kwa Combination, Kulia ni Matangazo & Mikoa -->
-    <div class="grid gap-8 lg:grid-cols-[2fr_1fr]">
-        
-        <!-- Upande wa Kushoto: Tafuta kwa Mchepuo -->
-        <div class="space-y-6">
-            <div class="card rounded-3xl border border-sky-100 bg-sky-50/50 p-6 backdrop-blur-sm">
-                <div class="flex items-center gap-3">
-                    <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-600 text-white shadow-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-slate-800">Tafuta kozi kwa Combination yako</h3>
-                        <p class="text-sm text-slate-500">Chagua mchepuo wako wa Kidato cha Sita (A-Level) uone kozi unazoweza kusoma.</p>
-                    </div>
-                </div>
-                
-                <form action="{% url 'universitysite:course_list' %}" method="get" class="mt-6 flex flex-col sm:flex-row gap-3">
-                    <select name="combination" required class="flex-1 rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-800 shadow-sm outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/25 transition">
-                        <option value="">Chagua Combination...</option>
-                        <option value="PCB">PCB (Physics, Chemistry, Biology)</option>
-                        <option value="PCM">PCM (Physics, Chemistry, Mathematics)</option>
-                        <option value="PMC">PMC (Physics, Mathematics, Computer)</option>
-                        <option value="CBG">CBG (Chemistry, Biology, Geography)</option>
-                        <option value="PGM">PGM (Physics, Geography, Mathematics)</option>
-                        <option value="EGM">EGM (Economics, Geography, Mathematics)</option>
-                        <option value="ECA">ECA (Economics, Commerce, Accountancy)</option>
-                        <option value="HGL">HGL (History, Geography, English)</option>
-                        <option value="HGK">HGK (History, Geography, Kiswahili)</option>
-                        <option value="HKL">HKL (History, Kiswahili, English)</option>
-                        <option value="CBA">CBA (Chemistry, Biology, Agriculture)</option>
-                        <option value="HGE">HGE (History, Geography, Economics)</option>
-                        <option value="CBN">CBN (Chemistry, Biology, Nutrition)</option>
-                    </select>
-                    <button type="submit" class="rounded-2xl bg-sky-600 px-6 py-3.5 font-semibold text-white shadow-lg shadow-sky-600/20 hover:bg-sky-700 hover:shadow-sky-700/30 transition hover:-translate-y-0.5">
-                        Tafuta Kozi
-                    </button>
-                </form>
-            </div>
-            
-            <!-- Quick Features -->
-            <div class="grid gap-4 sm:grid-cols-2">
-                <div class="card rounded-3xl p-6 hover:shadow-lg transition-all">
-                    <h4 class="font-bold text-slate-800 text-lg">🏫 Vyuo vya Kati & Vikuu</h4>
-                    <p class="text-sm text-slate-500 mt-2">Pata taarifa za Vyuo vikuu vilivyosajiliwa na TCU pamoja na vyuo vya kati vilivyosajiliwa na NACTE.</p>
-                </div>
-                <div class="card rounded-3xl p-6 hover:shadow-lg transition-all">
-                    <h4 class="font-bold text-slate-800 text-lg">💰 Ada & Sifa</h4>
-                    <p class="text-sm text-slate-500 mt-2">Ulinganifu wa ada na sifa za kujiunga unamsaidia mwanafunzi au mzazi kufanya maamuzi sahihi.</p>
-                </div>
-            </div>
+  <!-- ========== HOW IT WORKS ========== -->
+  <section class="rounded-3xl overflow-hidden shadow-lg" style="background:linear-gradient(135deg,#f8fafc,#eff6ff);">
+    <div class="px-8 py-10">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-extrabold text-slate-900">Jinsi Inavyofanya Kazi</h2>
+        <p class="text-sm text-slate-500 mt-1">Hatua 3 rahisi kupata chuo au kozi unayotaka</p>
+      </div>
+      <div class="grid gap-6 sm:grid-cols-3">
+        <div class="text-center">
+          <div class="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg"
+               style="background:linear-gradient(135deg,#0284c7,#6366f1);">1️⃣</div>
+          <h3 class="font-bold text-slate-800">Chagua Combination</h3>
+          <p class="text-sm text-slate-500 mt-1">Ingiza mchepuo wako wa Kidato cha Sita (A-Level) katika sehemu ya tafuta.</p>
         </div>
-
-        <!-- Upande wa Kulia: Matangazo & Mikoa -->
-        <div class="space-y-6">
-            
-            <!-- Tangazo Banner Premium -->
-            <div class="relative overflow-hidden rounded-3xl bg-sky-950 text-white shadow-xl aspect-[4/3] flex flex-col justify-end p-6 group">
-                <div class="absolute inset-0 z-0">
-                    <img src="{% static 'universitysite/images/ad_banner.png' %}" alt="Matangazo" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-                </div>
-                <div class="relative z-10">
-                    <span class="inline-flex items-center rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] font-bold text-yellow-300 ring-1 ring-yellow-500/30 mb-2">
-                        TANGAZO LA UDAHILI
-                    </span>
-                    <h4 class="text-lg font-bold">Nafasi za Masomo Zipo Wazi!</h4>
-                    <p class="text-xs text-slate-300 mt-1">
-                        Vyuo mbalimbali vinaendelea kupokea maombi kwa muhula mpya wa masomo. Wahudumu wetu wako tayari kukusaidia.
-                    </p>
-                    <a href="{% url 'universitysite:contact' %}" class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-sky-400 hover:text-sky-300 transition">
-                        Wasiliana Nasi <i class="fas fa-arrow-right text-[10px]"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Sehemu ya Mikoa -->
-            <div class="card rounded-3xl p-6">
-                <h3 class="text-lg font-bold text-slate-800">Tafuta Vyuo kwa Mikoa</h3>
-                <p class="text-xs text-slate-500 mt-1">Chagua mkoa kuona vyuo vilivyopo huko.</p>
-                
-                <div class="mt-4 grid grid-cols-2 gap-2 max-h-60 overflow-y-auto pr-1">
-                    {% for reg in region %}
-                    <a href="{% url 'universitysite:vyuo' reg.id %}"
-                        class="rounded-xl border border-slate-100 bg-slate-50 px-3 py-2 text-center text-xs font-semibold text-slate-700 hover:border-sky-400 hover:bg-sky-50 hover:text-sky-700 transition">
-                        {{ reg.name }}
-                    </a>
-                    {% endfor %}
-                </div>
-            </div>
-            
+        <div class="text-center">
+          <div class="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg"
+               style="background:linear-gradient(135deg,#059669,#0284c7);">2️⃣</div>
+          <h3 class="font-bold text-slate-800">Angalia Kozi &amp; Vyuo</h3>
+          <p class="text-sm text-slate-500 mt-1">Pata orodha ya kozi na vyuo vinavyostahili — pamoja na ada na sifa za kujiunga.</p>
         </div>
+        <div class="text-center">
+          <div class="mx-auto w-16 h-16 rounded-2xl flex items-center justify-center text-2xl mb-4 shadow-lg"
+               style="background:linear-gradient(135deg,#7c3aed,#db2777);">3️⃣</div>
+          <h3 class="font-bold text-slate-800">Omba Udahili</h3>
+          <p class="text-sm text-slate-500 mt-1">Tembelea tovuti ya chuo moja kwa moja na uwasiliane nao ili uanze safari yako ya masomo.</p>
+        </div>
+      </div>
     </div>
+  </section>
+
 </div>
+
+<style>
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+</style>
 {% endblock %}
