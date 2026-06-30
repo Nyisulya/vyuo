@@ -1,0 +1,88 @@
+{% extends 'universitysite/base.html' %}
+
+{% block title %}Tafuta Vyuo kwa Mkoa Tanzania | VyuoFinder{% endblock %}
+{% block meta_description %}Angalia vyuo vikuu na vyuo vya kati vilivyopo katika mikoa yote Tanzania. Chagua mkoa wako ili uone orodha ya vyuo vya TCU na NACTE vilivyoko huko.{% endblock %}
+{% block og_title %}Mikoa Yote Tanzania — Tafuta Vyuo | VyuoFinder{% endblock %}
+{% block og_description %}Pata vyuo vikuu na vyuo vya kati katika mikoa yote Tanzania. Chagua mkoa wako kupata orodha kamili ya vyuo.{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+
+  {# ===== Breadcrumbs ===== #}
+  <nav aria-label="breadcrumb" class="text-sm text-slate-500 flex items-center gap-1.5 flex-wrap">
+    <a href="{% url 'universitysite:home' %}" class="hover:text-sky-600 transition-colors">Nyumbani</a>
+    <span>/</span>
+    <span class="text-slate-800 font-medium">Mikoa Yote</span>
+  </nav>
+
+  {# ===== Header ===== #}
+  <section class="relative overflow-hidden rounded-3xl text-white shadow-xl"
+           style="background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 60%,#0f172a 100%);min-height:180px;">
+    <div style="position:absolute;top:-40px;right:-40px;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.15) 0%,transparent 70%);pointer-events:none;"></div>
+    <div style="position:absolute;bottom:-30px;left:60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.12) 0%,transparent 70%);pointer-events:none;"></div>
+    <div class="relative z-10 px-8 py-10">
+      <p class="text-xs uppercase tracking-[0.3em] font-semibold mb-3" style="color:#7dd3fc;">
+        <i class="fas fa-map-marked-alt mr-2"></i>Tafuta Karibu Nawe
+      </p>
+      <h1 class="text-3xl font-extrabold">Vyuo kwa Mikoa Tanzania</h1>
+      <p class="mt-2 text-slate-300 text-base max-w-xl">
+        Chagua mkoa wako ili uone vyuo vikuu na vyuo vya kati vilivyopo huko — pamoja na kozi, ada na sifa za kujiunga.
+      </p>
+      <div class="mt-4 flex items-center gap-2 text-sm text-slate-400">
+        <span class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-medium"
+              style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);">
+          <i class="fas fa-globe-africa text-sky-400"></i>
+          Mikoa {{ region|length }} Tanzania
+        </span>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Region Grid ===== #}
+  <section>
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {% for reg in region %}
+      <a href="{% url 'universitysite:vyuo' reg.id %}"
+         class="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 text-center shadow-sm transition-all hover:border-sky-400 hover:shadow-lg hover:-translate-y-1">
+        <!-- decorative circle -->
+        <div style="position:absolute;top:-15px;right:-15px;width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.12) 0%,transparent 70%);pointer-events:none;transition:all 0.3s;"></div>
+
+        <div class="mb-2 text-2xl">📍</div>
+        <p class="text-sm font-bold text-slate-800 group-hover:text-sky-700 transition-colors leading-tight">
+          {{ reg.name }}
+        </p>
+        <p class="mt-1.5 text-[10px] font-semibold text-sky-600 group-hover:text-sky-500 transition-colors flex items-center justify-center gap-1">
+          Angalia Vyuo <i class="fas fa-arrow-right text-[8px]"></i>
+        </p>
+      </a>
+      {% empty %}
+      <div class="col-span-full text-center py-12 text-slate-400">
+        <i class="fas fa-map text-4xl mb-3"></i>
+        <p>Hakuna mikoa iliyowekwa bado.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  {# ===== CTA ===== #}
+  <section class="card rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4"
+           style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1px solid #bfdbfe;">
+    <div>
+      <h2 class="font-extrabold text-slate-800 text-lg">Bado Hutapata Unachotaka?</h2>
+      <p class="text-sm text-slate-500 mt-1">Angalia vyuo vyote au kozi zote Tanzania bila kuchagua mkoa.</p>
+    </div>
+    <div class="flex gap-3 flex-wrap">
+      <a href="{% url 'universitysite:university_list' %}"
+         class="rounded-2xl px-5 py-2.5 text-sm font-bold text-white shadow-md transition hover:-translate-y-0.5"
+         style="background:linear-gradient(135deg,#0284c7,#6366f1);">
+        <i class="fas fa-university mr-1"></i> Vyuo Vyote
+      </a>
+      <a href="{% url 'universitysite:course_list' %}"
+         class="rounded-2xl bg-white text-slate-700 border border-slate-200 px-5 py-2.5 text-sm font-bold hover:bg-slate-50 transition">
+        <i class="fas fa-book-open mr-1"></i> Kozi Zote
+      </a>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
